@@ -1,14 +1,5 @@
-function getItunesResponse(searchTerm) {
-	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm;
-
-	fetch(fullUrl, {mode: 'cors'})
-		.then(function(response){
-			console.log(response)
-		})
-}
-
 function makeItunesCall(searchTerm) {
-	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&limit=200&callback=getItunesData";
+	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&attribute=songTerm&limit=200&callback=getItunesData";
 	var scriptEl = document.createElement("script");
 	var bodyEl = document.body;
 
@@ -20,13 +11,28 @@ function makeItunesCall(searchTerm) {
 
 
 function getItunesData(response) {
-	console.log(response)
+	console.log(response.results)
 
-
-	
+	var searchResults = response.results;
+	parseItunesResults(searchResults);
 }
 
-makeItunesCall("travis+scott+antidote");
+function parseItunesResults(searchResults) {
+	var desiredResult;
+	for (var i = 0; i < searchResults.length; i++) {
+		if (searchResults[i].artistId === artistId) {
+			desiredResult = searchResults[i];
+		}
+	}
+
+	if (!desiredResult) {
+		console.log("Error: Artist not found");
+	}
+
+
+}
+
+//makeItunesCall("travis+scott+antidote");//+antidote");
 
 
 
