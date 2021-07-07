@@ -222,7 +222,21 @@ var originDropdown = document.getElementById('originDropdown')
 // KEY SELECTOR
 var keyLabel = document.getElementById('keyLabel')
 var keyDropdown = document.getElementById('keyDropdown')
+// BUTTON SELECTOR 
+var submitBTN = document.getElementById('submitBTN')
+
+function GetBpmApi() {
+    fetch(`https://api.getsongbpm.com/search/?api_key=893450d85c97cdffba8a49349f3d8974`)
+    .then(function (response) {
+        console.log(response)
+        return response.json();
+    })
+    .then(function (data) {
+        console.log(data)
+    })
+}
 
 
+submitBTN.addEventListener('click', GetBpmApi())
 
 
