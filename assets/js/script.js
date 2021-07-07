@@ -32,11 +32,20 @@ function parseItunesResults(searchResults) {
 
 }
 
+function parseBpmResults(bpmObjArr) {
+	for (var i = 0; i < bpmObjArr.length; i++) {
+		
+	}	
+}
+
 //makeItunesCall("travis+scott+antidote");//+antidote");
 
+function plusDelimitString(str) {
+	var tempArr = str.split(" ");
+	return tempArr.join("+");
+}
 
-
-
+console.log(plusDelimitString("Michael Jackson"))
 
 
 
