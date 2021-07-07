@@ -21,10 +21,12 @@ function makeItunesCall(searchTerm) {
 
 function getItunesData(response) {
 	console.log(response)
+
+
 	
 }
 
-createItunesCall("travis+scott");
+makeItunesCall("travis+scott+antidote");
 
 
 
