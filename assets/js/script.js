@@ -33,8 +33,10 @@ function parseItunesResults(searchResults) {
 }
 
 function parseBpmResults(bpmObjArr) {
+	console.log('in')
+	console.log(bpmObjArr)
 	for (var i = 0; i < bpmObjArr.length; i++) {
-		
+		var aristName = bpmObjArr[i].name;	
 	}	
 }
 
@@ -48,7 +50,7 @@ function plusDelimitString(str) {
 console.log(plusDelimitString("Michael Jackson"))
 
 
-
+GetBpmApi(100);
 
 
 
@@ -295,7 +297,7 @@ submitBTN.addEventListener('click', GetBpmApi)
 
 function createArrObj(inputData){
     var arrayOfObjects = [];
-    for(i=0; i < inputData.length; i++) {
+    for(i=0; i < inputData.tempo.length; i++) {
         songInfo = {
             name: inputData.tempo[i].artist.name,
             mbid: inputData.tempo[i].artist.mbid,
