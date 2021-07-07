@@ -1,7 +1,51 @@
+function makeItunesCall(searchTerm) {
+	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&attribute=songTerm&limit=200&callback=getItunesData";
+	var scriptEl = document.createElement("script");
+	var bodyEl = document.body;
+
+	scriptEl.setAttribute("src", fullUrl);
+	scriptEl.setAttribute("id", "api-call")
+	bodyEl.appendChild(scriptEl);
+	bodyEl.removeChild(scriptEl);
+}
 
 
+function getItunesData(response) {
+	console.log(response.results)
+
+	var searchResults = response.results;
+	parseItunesResults(searchResults);
+}
+
+function parseItunesResults(searchResults) {
+	var desiredResult;
+	for (var i = 0; i < searchResults.length; i++) {
+		if (searchResults[i].artistId === artistId) {
+			desiredResult = searchResults[i];
+		}
+	}
+
+	if (!desiredResult) {
+		console.log("Error: Artist not found");
+	}
 
 
+}
+
+function parseBpmResults(bpmObjArr) {
+	for (var i = 0; i < bpmObjArr.length; i++) {
+		
+	}	
+}
+
+//makeItunesCall("travis+scott+antidote");//+antidote");
+
+function plusDelimitString(str) {
+	var tempArr = str.split(" ");
+	return tempArr.join("+");
+}
+
+console.log(plusDelimitString("Michael Jackson"))
 
 
 
