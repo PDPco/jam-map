@@ -1,3 +1,30 @@
+function getItunesResponse(searchTerm) {
+	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm;
+
+	fetch(fullUrl, {mode: 'cors'})
+		.then(function(response){
+			console.log(response)
+		})
+}
+
+function makeItunesCall(searchTerm) {
+	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&limit=200&callback=getItunesData";
+	var scriptEl = document.createElement("script");
+	var bodyEl = document.body;
+
+	scriptEl.setAttribute("src", fullUrl);
+	scriptEl.setAttribute("id", "api-call")
+	bodyEl.appendChild(scriptEl);
+	bodyEl.removeChild(scriptEl);
+}
+
+
+function getItunesData(response) {
+	console.log(response)
+	
+}
+
+createItunesCall("travis+scott");
 
 
 
