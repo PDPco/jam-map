@@ -4,9 +4,73 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Jam Map</title>
 </head>
 <body>
+    <header>
+        <h1>Jam Map</h1>
+    </header>
+
+    <section class="searchPreferences">
+        <div class = "BPM">
+           <label id = "maxBPMLabel"> Maximum Beats Per Minute</label> 
+           <input type="range" min="40" max="220" value="100" class="BPMValue" id="maxBPMRange">
+           <output id = "BPMValue">100</output>
+
+           <label id = "minBPMLabel">Minimum Beats Per Minute</label> 
+           <input type="range" min="40" max="220" value="100" class="BPMValue" id="minBPMRange">
+           <output id = "BPMValue">100</output>
+        </div>   
+        
+        <div class="genre">
+            <label id = "genreLabel">Genre</label>
+            <select name="genre" id="genreDropdown">
+                <option value="rock">Rock</option>
+                <option value="rap">Rap</option>
+                <option value="pop">Pop</option>
+                <option value="disco">Disco</option>
+                <option value="country">Country</option>
+            </select>
+        </div>
+
+        <div class = "year">
+            <label id = "maxYearLabel">Year</label> 
+            <input type="range" min="1920" max="2021" value="1950" class="yearValue" id="MaxYearRange">
+            <output id = "currentMaxYear">1950</output>
+
+            <label id = "minYearLabel">Year</label> 
+            <input type="range" min="1920" max="2021" value="1950" class="yearValue" id="MinYearRange">
+            <output id = "currentMinYear">1950</output>
+        </div>  
+
+        <div class="origin">
+            <label id = "originLabel">Origin</label>
+            <select name="origin" id="originDropdown">
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+                <option value="France">France</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Canada">Canada</option>
+            </select>
+        </div>
+
+        <div class="key">
+            <label id = "keyLabel">Origin</label>
+            <select name="key" id="keyDropdown">
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+                <option value="d">D</option>
+                <option value="e">E</option>
+            </select>
+        </div>
+    </section>
+
+    <section class = "results">
+        <h2>results</h2>
+        
+
+    </section>
     
 </body>
 </html>
