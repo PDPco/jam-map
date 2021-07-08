@@ -1,0 +1,35 @@
+:root {
+    background-color:white;
+}
+
+.searchPreferences {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+.BPM {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+.BPMValue {
+    -webkit-appearance: none;
+    -webkit-appearance: none;
+    width: 50%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+#genreDropdown {
+    -webkit-appearance: none;
+    -webkit-appearance: none;
+    width: 50%;
+    height: 25px;
+    background: #d3d3d3;
+}
