@@ -272,7 +272,7 @@ console.log(genreDropdown.value)
 
 
 
-function GetBpmApi(integer) {
+function GetBpmApi(integer, userInput) {
     fetch(`https://api.getsongbpm.com/tempo/?api_key=893450d85c97cdffba8a49349f3d8974&bpm=${integer}`)
     .then(function (response) {
         console.log(response)
@@ -290,7 +290,7 @@ function GetBpmApi(integer) {
     })
 }
 
-function createArrObj(inputData){
+function createArrObj(inputData, userInput){
     var arrayOfObjects = [];
 	console.log(inputData.tempo[0].artist.genres.includes(userInput.genre))
 	console.log(userInput.genre)
