@@ -153,13 +153,21 @@ function getUserInput() {
 	return allInput;
 }
 
-function iterateBpm(input) {
+function iterateBpm(allInput) {
+	var minBpm = allInput.minBpm;
+	var maxBpm = allInput.maxBpm;
+
+	var Bpm = minBpm;
+	while (Bpm <= maxBpm) {
+		GetBpmApi(Bpm); //may need to pass allInput to GetBpmApi to filter results
+		Bpm++;
+	}
 
 }
 
 function startJamMap() {
 	initializeSliders();
-	var input = getUserInput();
+	var allInput = getUserInput();
 
 }
 startJamMap();
