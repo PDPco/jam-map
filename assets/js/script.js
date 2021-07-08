@@ -1,26 +1,26 @@
-var maxBPMLabel = document.getElementById('maxBPMLabel')
-var maxBPMRange = document.getElementById('maxBPMRange')
-var minBPMLabel = document.getElementById('minBPMLabel')
-var minBPMRange = document.getElementById('minBPMRange')
-var BPMValue = document.getElementById('BPMValue');
+const maxBPMLabel = document.getElementById('maxBPMLabel')
+const maxBPMRange = document.getElementById('maxBPMRange')
+const minBPMLabel = document.getElementById('minBPMLabel')
+const minBPMRange = document.getElementById('minBPMRange')
+const BPMValue = document.getElementById('BPMValue');
 // GENRE SELECTION
-var genreLabel = document.getElementById('genreLabel')
-var genreDropdown = document.getElementById('genreDropdown')
+const genreLabel = document.getElementById('genreLabel')
+const genreDropdown = document.getElementById('genreDropdown')
 // YEAR SELECTORS
-var maxYearLable = document.getElementById('maxYearLabel')
-var maxYearRange = document.getElementById('MaxYearRange')
-var currentMaxYear = document.getElementById('currentMaxYear')
-var minYearLabel = document.getElementById('minYearLabel')
-var minYearRange = document.getElementById('MinYearRange')
-var currentMinYear = document.getElementById('currentMinYear')
+const maxYearLable = document.getElementById('maxYearLabel')
+const maxYearRange = document.getElementById('MaxYearRange')
+const currentMaxYear = document.getElementById('currentMaxYear')
+const minYearLabel = document.getElementById('minYearLabel')
+const minYearRange = document.getElementById('MinYearRange')
+const currentMinYear = document.getElementById('currentMinYear')
 // ORIGIN 
-var originLabel = document.getElementById('originLabel')
-var originDropdown = document.getElementById('originDropdown')
+const originLabel = document.getElementById('originLabel')
+const originDropdown = document.getElementById('originDropdown')
 // KEY SELECTOR
-var keyLabel = document.getElementById('keyLabel')
-var keyDropdown = document.getElementById('keyDropdown')
+const keyLabel = document.getElementById('keyLabel')
+const keyDropdown = document.getElementById('keyDropdown')
 // BUTTON SELECTOR 
-var submitBTN = document.getElementById('submitBTN')
+const submitBTN = document.getElementById('submitBTN')
 
 function makeItunesCall(searchTerm, artistName) {
 	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
@@ -162,7 +162,6 @@ function iterateBpm(allInput) {
 		GetBpmApi(Bpm); //may need to pass allInput to GetBpmApi to filter results
 		Bpm++;
 	}
-
 }
 
 function startJamMap() {
@@ -368,33 +367,6 @@ startJamMap();
 
 // ------------------------ START OF NEW WORK SPACE ----------
 
-// EMPTY ARRAY TO PUSH OBJECTS
-
-// BPM RANGE SELECTOR
-var maxBPMLabel = document.getElementById('maxBPMLabel')
-var maxBPMRange = document.getElementById('maxBPMRange')
-var minBPMLabel = document.getElementById('minBPMLabel')
-var minBPMRange = document.getElementById('minBPMRange')
-var BPMValue = document.getElementById('BPMValue');
-// GENRE SELECTION
-var genreLabel = document.getElementById('genreLabel')
-var genreDropdown = document.getElementById('genreDropdown')
-// YEAR SELECTORS
-var maxYearLable = document.getElementById('maxYearLabel')
-var maxYearRange = document.getElementById('MaxYearRange')
-var currentMaxYear = document.getElementById('currentMaxYear')
-var minYearLabel = document.getElementById('minYearLabel')
-var minYearRange = document.getElementById('MinYearRange')
-var currentMinYear = document.getElementById('currentMinYear')
-// ORIGIN 
-var originLabel = document.getElementById('originLabel')
-var originDropdown = document.getElementById('originDropdown')
-// KEY SELECTOR
-var keyLabel = document.getElementById('keyLabel')
-var keyDropdown = document.getElementById('keyDropdown')
-// BUTTON SELECTOR 
-var submitBTN = document.getElementById('submitBTN')
-
 console.log(genreDropdown.value)
 
 
@@ -411,11 +383,6 @@ function GetBpmApi(integer) {
         parseBpmResults(objArr)
     })
 }
-
-
-submitBTN.addEventListener('click', GetBpmApi)
-
-
 
 function createArrObj(inputData){
     var arrayOfObjects = [];
