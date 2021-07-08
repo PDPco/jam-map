@@ -1,8 +1,9 @@
 const maxBPMLabel = document.getElementById('maxBPMLabel')
 const maxBPMRange = document.getElementById('maxBPMRange')
+const MaxBPMValue = document.getElementById('MaxBPMValue')
 const minBPMLabel = document.getElementById('minBPMLabel')
 const minBPMRange = document.getElementById('minBPMRange')
-const BPMValue = document.getElementById('BPMValue');
+const MinBPMValue = document.getElementById('MinBPMValue')
 // GENRE SELECTION
 const genreLabel = document.getElementById('genreLabel')
 const genreDropdown = document.getElementById('genreDropdown')
@@ -123,6 +124,7 @@ function plusDelimitString(str) {
  */
 function initializeSliders() {
 	console.log("im in")
+	updateSilderLabel(minBPMRange, maxBPMRange, MinBPMValue, MaxBPMValue);
 	updateSilderLabel(minYearRange, maxYearRange, currentMinYear, currentMaxYear);
 }
 
@@ -169,7 +171,6 @@ function getUserInput() {
 		iterateBpm(allInput);
 		console.log(allInput);
 	})
-	return allInput;
 }
 
 function iterateBpm(allInput) {
@@ -186,9 +187,7 @@ function iterateBpm(allInput) {
 
 function startJamMap() {
 	initializeSliders();
-	var allInput = getUserInput();
-	console.log(allInput)
-		
+	getUserInput();
 }
 startJamMap();
 
