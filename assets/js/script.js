@@ -126,7 +126,9 @@ function parseBpmResults(bpmObjArr) {
 }
 
 function displayResults(bpmObjArr) {
+	//Create pointers to elements
 
+	//Iterate thorugh bpmObjArr and place info in elements
 }
 
 function plusDelimitString(str) {
@@ -199,7 +201,7 @@ function iterateBpm(allInput) {
 	var Bpm = minBpm;
 	while (Bpm <= minBpm) {//maxBpm) {
 		console.log(Bpm)
-		GetBpmApi(Bpm); //may need to pass allInput to GetBpmApi to filter results
+		GetBpmApi(Bpm, allInput); //may need to pass allInput to GetBpmApi to filter results
 		Bpm++;
 	}
 }
