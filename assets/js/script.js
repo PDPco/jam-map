@@ -1,40 +1,54 @@
-function makeItunesCall(searchTerm) {
-	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&attribute=songTerm&limit=200&callback=getItunesData";
+function makeItunesCall(searchTerm, artistName) {
+	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
 	var scriptEl = document.createElement("script");
 	var bodyEl = document.body;
 
 	scriptEl.setAttribute("src", fullUrl);
-	scriptEl.setAttribute("id", "api-call")
+	scriptEl.setAttribute("class", "api-call");
+	scriptEl.setAttribute("id", artistName);
 	bodyEl.appendChild(scriptEl);
-	bodyEl.removeChild(scriptEl);
 }
 
 
 function getItunesData(response) {
 	console.log(response.results)
-
+	var scriptEl = document.getElementsByClassName("api-call");
+	var bodyEl = document.body;
 	var searchResults = response.results;
-	parseItunesResults(searchResults);
+	var artistName = scriptEl[0].attributes.id.nodeValue;
+
+	console.log(filterResults(response.results, artistName), "filtered");	
+
+	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
+	bodyEl.removeChild(scriptElId);	
+
+	//parseItunesResults(searchResults);
 }
 
-function parseItunesResults(searchResults) {
-	var desiredResult;
-	for (var i = 0; i < searchResults.length; i++) {
-		if (searchResults[i].artistId === artistId) {
-			desiredResult = searchResults[i];
+function filterResults(arr, artistName) {
+	//console.log(arr)
+	for (var i = 0; i < arr.length; i++) {
+		if (arr[i].artistName !== artistName) {
+			arr.splice(i, i+1);
+			i--;
 		}
 	}
-
-	if (!desiredResult) {
-		console.log("Error: Artist not found");
-	}
-
-
+	return arr;
 }
 
 function parseBpmResults(bpmObjArr) {
+	var limit = 0;
 	for (var i = 0; i < bpmObjArr.length; i++) {
-		
+		if (i > limit) {
+			break;
+		}
+		var artistName = bpmObjArr[i].name;
+		var songName = bpmObjArr[i].songName;
+		var searchString = artistName + " " + songName;
+
+		searchString = plusDelimitString(searchString);
+		console.log(searchString)
+		makeItunesCall(searchString, artistName);
 	}	
 }
 
@@ -48,7 +62,7 @@ function plusDelimitString(str) {
 console.log(plusDelimitString("Michael Jackson"))
 
 
-
+GetBpmApi(100);
 
 
 
@@ -295,7 +309,7 @@ submitBTN.addEventListener('click', GetBpmApi)
 
 function createArrObj(inputData){
     var arrayOfObjects = [];
-    for(i=0; i < inputData.length; i++) {
+    for(i=0; i < inputData.tempo.length; i++) {
         songInfo = {
             name: inputData.tempo[i].artist.name,
             mbid: inputData.tempo[i].artist.mbid,
