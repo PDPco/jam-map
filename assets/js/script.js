@@ -22,9 +22,16 @@ function getItunesData(response) {
 	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
 	bodyEl.removeChild(scriptElId);	
 
-	//parseItunesResults(searchResults);
 }
 
+/* filterResults ensures that the array from the iTunes api call contains only the artist given as searchTerm in makeItunesCall.
+ * Artists that are not in searchTerm will be remove from the array.
+ *	Inputs:
+ *		arr (Array): array which contains all the results from the iTunes api call
+ *		artistName (String):
+ *	Outputs:
+ *		arr (Array): array with elements not containing artistName removed
+ */
 function filterResults(arr, artistName) {
 	//console.log(arr)
 	for (var i = 0; i < arr.length; i++) {
@@ -36,6 +43,13 @@ function filterResults(arr, artistName) {
 	return arr;
 }
 
+/* parseBpmResults receives an array of objects from the GetBPM api call and creates and formats a string to be used in the 
+ * iTunes api call.
+ * 	Inputs:
+ * 		bpmObjArr (Array): data container for a specific song containing name, songName, mbid, genres, year, and from
+ * 	Outputs:
+ * 		None
+ */
 function parseBpmResults(bpmObjArr) {
 	var limit = 0;
 	for (var i = 0; i < bpmObjArr.length; i++) {
@@ -52,17 +66,34 @@ function parseBpmResults(bpmObjArr) {
 	}	
 }
 
-//makeItunesCall("travis+scott+antidote");//+antidote");
 
 function plusDelimitString(str) {
 	var tempArr = str.split(" ");
 	return tempArr.join("+");
 }
 
-console.log(plusDelimitString("Michael Jackson"))
+function initializeSliders() {
+	var maxYearSlider = document.getElementById("MaxYearRange");
+	var minYearSlider = document.getElementById("MinYearRange");
+	var minYearOutput = document.getElementById("currentMinYear");
+	var maxYearOutput = document.getElementById("currentMaxYear");
 
+	updateSilderLabel(minYearSlider, maxYearSlider, minYearOutput, maxYearOutput);
+}
 
-GetBpmApi(100);
+function updateSilderLabel(minSlider, maxSlider, minOut, maxOut) {
+	minSlider.addEventListener("input", function(){
+		minOut.innerHTML = this.value;
+	})
+	maxSlider.addEventListener("input", function(){
+		maxOut.innerHTML = this.value;
+	})
+
+}
+
+initializeSliders();
+
+//GetBpmApi(100);
 
 
 
