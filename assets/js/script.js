@@ -384,11 +384,6 @@ function GetBpmApi(integer) {
     })
 }
 
-
-submitBTN.addEventListener('click', GetBpmApi)
-
-
-
 function createArrObj(inputData){
     var arrayOfObjects = [];
     for(i=0; i < inputData.tempo.length; i++) {
