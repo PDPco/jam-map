@@ -266,152 +266,13 @@ startJamMap();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ------------------------ START OF NEW WORK SPACE ----------
 
 console.log(genreDropdown.value)
 
 
 
-function GetBpmApi(integer) {
+function GetBpmApi(integer, userInput) {
     fetch(`https://api.getsongbpm.com/tempo/?api_key=893450d85c97cdffba8a49349f3d8974&bpm=${integer}`)
     .then(function (response) {
         console.log(response)
@@ -419,21 +280,44 @@ function GetBpmApi(integer) {
     })
     .then(function (data) {
         console.log(data)
-        var objArr = createArrObj(data)
-        parseBpmResults(objArr)
+        var objArr = createArrObj(data, userInput)
+		 if (objArr.length === 0) {
+		 	console.log('No results found')
+		 } else {
+		 	console.log(objArr)
+			parseBpmResults(objArr)
+		 }
     })
 }
 
-function createArrObj(inputData){
+function createArrObj(inputData, userInput){
     var arrayOfObjects = [];
+	console.log(inputData.tempo[0].artist.genres.includes(userInput.genre))
+	console.log(userInput.genre)
     for(i=0; i < inputData.tempo.length; i++) {
-        songInfo = {
-            name: inputData.tempo[i].artist.name,
-            mbid: inputData.tempo[i].artist.mbid,
-            songName: inputData.tempo[i].song_title,
-            year: inputData.tempo[i].album.year
-        }
-        arrayOfObjects.push(songInfo)
+		var parsedInt = parseInt(inputData.tempo[i].album.year)
+		var userParsedMinInt = parseInt(userInput.minYear)
+		var userParsedMaxInt = parseInt(userInput.maxYear)
+		if(inputData.tempo[i].artist.genres === null){
+			continue;
+		}
+		if(inputData.tempo[i].artist.genres.includes(userInput.genre) && inputData.tempo[i].artist.from.includes(userInput.origin) && parsedInt > userParsedMinInt && parsedInt < userParsedMaxInt) { // need to write functionality for taking the specified year
+			songInfo = {
+				name: inputData.tempo[i].artist.name,
+				mbid: inputData.tempo[i].artist.mbid,
+				songName: inputData.tempo[i].song_title,
+				year: inputData.tempo[i].album.year,
+				genre: inputData.tempo[i].artist.genres,
+				origin: inputData.tempo[i].artist.from,
+				BPM: inputData.tempo[i].artist.tempo
+			}
+			arrayOfObjects.push(songInfo)
+			console.log(songInfo)
+		}
     }
+	console.log(userParsedMinInt)
+	console.log(userParsedMaxInt)
+	console.log(arrayOfObjects)
     return arrayOfObjects;
 }
+
