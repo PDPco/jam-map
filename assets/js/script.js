@@ -1,3 +1,27 @@
+var maxBPMLabel = document.getElementById('maxBPMLabel')
+var maxBPMRange = document.getElementById('maxBPMRange')
+var minBPMLabel = document.getElementById('minBPMLabel')
+var minBPMRange = document.getElementById('minBPMRange')
+var BPMValue = document.getElementById('BPMValue');
+// GENRE SELECTION
+var genreLabel = document.getElementById('genreLabel')
+var genreDropdown = document.getElementById('genreDropdown')
+// YEAR SELECTORS
+var maxYearLable = document.getElementById('maxYearLabel')
+var maxYearRange = document.getElementById('MaxYearRange')
+var currentMaxYear = document.getElementById('currentMaxYear')
+var minYearLabel = document.getElementById('minYearLabel')
+var minYearRange = document.getElementById('MinYearRange')
+var currentMinYear = document.getElementById('currentMinYear')
+// ORIGIN 
+var originLabel = document.getElementById('originLabel')
+var originDropdown = document.getElementById('originDropdown')
+// KEY SELECTOR
+var keyLabel = document.getElementById('keyLabel')
+var keyDropdown = document.getElementById('keyDropdown')
+// BUTTON SELECTOR 
+var submitBTN = document.getElementById('submitBTN')
+
 function makeItunesCall(searchTerm, artistName) {
 	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
 	var scriptEl = document.createElement("script");
@@ -72,26 +96,73 @@ function plusDelimitString(str) {
 	return tempArr.join("+");
 }
 
+/* initializeSliders creates pointers to the HTML slider elements and calls updateSliderLabel
+ * to initialize the slider event listeners so that the labels are updated on the page
+ * 	Inputs:
+ * 		None
+ * 	Outputs:
+ * 		None
+ */
 function initializeSliders() {
-	var maxYearSlider = document.getElementById("MaxYearRange");
-	var minYearSlider = document.getElementById("MinYearRange");
-	var minYearOutput = document.getElementById("currentMinYear");
-	var maxYearOutput = document.getElementById("currentMaxYear");
-
-	updateSilderLabel(minYearSlider, maxYearSlider, minYearOutput, maxYearOutput);
+	console.log("im in")
+	updateSilderLabel(minYearRange, maxYearRange, currentMinYear, currentMaxYear);
 }
 
-function updateSilderLabel(minSlider, maxSlider, minOut, maxOut) {
+/* This function generalizes the setup for creating slider event listeners
+ * 	Inputs:
+ *		minSlider (Object): Slider element to take user input of min value
+ *		maxSlider (Object): Slider element to take user input of max value
+ *		minOut	  (Object): Output element for minimum value
+ *		maxOut    (Object): Output element for maximum value
+ *	Outputs: 
+ *		None
+ */
+ function updateSilderLabel(minSlider, maxSlider, minOut, maxOut) {
 	minSlider.addEventListener("input", function(){
 		minOut.innerHTML = this.value;
+		minSlider.setAttribute("value", this.value);
 	})
 	maxSlider.addEventListener("input", function(){
 		maxOut.innerHTML = this.value;
+		maxSlider.setAttribute("value", this.value);
 	})
+}
+
+
+function getUserInput() {
+	console.log("im in")
+	var allInput = {minBpm: "",
+	                maxBpm: "",
+		       minYear: "",
+		       maxYear: "",
+		         genre: "",
+			origin: "",
+			   key: ""
+	}
+	submitBTN.addEventListener("click", function(){
+		allInput.minBpm = minBPMRange.value;//getAttribute("value");
+		allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
+		allInput.minYear = minYearRange.value;//getAttribute("value");
+		allInput.maxYear = maxYearRange.value;//getAttribute("value");
+		allInput.genre = genreDropdown.value;
+		allInput.origin = originDropdown.value;
+		allInput.key = keyDropdown.value;
+
+		console.log(allInput);
+	})
+	return allInput;
+}
+
+function iterateBpm(input) {
 
 }
 
-initializeSliders();
+function startJamMap() {
+	initializeSliders();
+	var input = getUserInput();
+
+}
+startJamMap();
 
 //GetBpmApi(100);
 
