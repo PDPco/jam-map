@@ -1,13 +1,14 @@
 const maxBPMLabel = document.getElementById('maxBPMLabel')
 const maxBPMRange = document.getElementById('maxBPMRange')
+const MaxBPMValue = document.getElementById('MaxBPMValue')
 const minBPMLabel = document.getElementById('minBPMLabel')
 const minBPMRange = document.getElementById('minBPMRange')
-const BPMValue = document.getElementById('BPMValue');
+const MinBPMValue = document.getElementById('MinBPMValue')
 // GENRE SELECTION
 const genreLabel = document.getElementById('genreLabel')
 const genreDropdown = document.getElementById('genreDropdown')
 // YEAR SELECTORS
-const maxYearLable = document.getElementById('maxYearLabel')
+const maxYearLabel = document.getElementById('maxYearLabel')
 const maxYearRange = document.getElementById('MaxYearRange')
 const currentMaxYear = document.getElementById('currentMaxYear')
 const minYearLabel = document.getElementById('minYearLabel')
@@ -22,6 +23,18 @@ const keyDropdown = document.getElementById('keyDropdown')
 // BUTTON SELECTOR 
 const submitBTN = document.getElementById('submitBTN')
 
+
+/* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
+ * run into issues with CORS not being enable on iTunes side. Instead of fetch, we have to create
+ * a script tag with the src attribute set to the url for the api call, containing a parameter (callback)
+ * which calls getItunesData to receive the response. The script tag is made with the id attribute
+ * set to artistName so that it can be grabbed in a later function and removed from the DOM.
+ * 	Inputs:
+ * 		searchTerm (String): search term which should be "(artist)+(song name)"
+ * 		artistName (String): the name of the artist
+ *	Outputs:
+ *		None
+ */
 function makeItunesCall(searchTerm, artistName) {
 	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
 	var scriptEl = document.createElement("script");
@@ -33,18 +46,39 @@ function makeItunesCall(searchTerm, artistName) {
 	bodyEl.appendChild(scriptEl);
 }
 
-
+/* getItunesData takes the response from iTunes after the HTML script tag is generated and filters
+ * the results to make sure only the desired artist shows in the results. The function also
+ * takes care of removing the created script tag for the itunes call. 
+ *	Inputs:
+ *		response: response from the iTunes call
+ *	Outputs:
+ */
 function getItunesData(response) {
-	console.log(response.results)
+	//console.log(response.results)
 	var scriptEl = document.getElementsByClassName("api-call");
 	var bodyEl = document.body;
 	var searchResults = response.results;
 	var artistName = scriptEl[0].attributes.id.nodeValue;
 
-	console.log(filterResults(response.results, artistName), "filtered");	
+	var filteredResults = filterResults(response.results, artistName);	
 
 	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
-	bodyEl.removeChild(scriptElId);	
+	bodyEl.removeChild(scriptElId);
+
+	console.log(filteredResults)
+
+	var m4aURL = filteredResults[0].previewUrl;
+	var audioEl = document.createElement("audio");
+	var sourceEl = document.createElement("source");
+
+	//create audio element function
+	//display results to html function
+	audioEl.setAttribute("controls", "");
+	sourceEl.setAttribute("src", m4aURL);
+	sourceEl.setAttribute("type", "audio/mp4")
+	audioEl.appendChild(sourceEl);
+	
+	bodyEl.appendChild(audioEl);
 
 }
 
@@ -86,10 +120,16 @@ function parseBpmResults(bpmObjArr) {
 
 		searchString = plusDelimitString(searchString);
 		console.log(searchString)
+		displayResults(bpmObjArr);
 		makeItunesCall(searchString, artistName);
 	}	
 }
 
+function displayResults(bpmObjArr) {
+	//Create pointers to elements
+
+	//Iterate thorugh bpmObjArr and place info in elements
+}
 
 function plusDelimitString(str) {
 	var tempArr = str.split(" ");
@@ -105,6 +145,7 @@ function plusDelimitString(str) {
  */
 function initializeSliders() {
 	console.log("im in")
+	updateSilderLabel(minBPMRange, maxBPMRange, MinBPMValue, MaxBPMValue);
 	updateSilderLabel(minYearRange, maxYearRange, currentMinYear, currentMaxYear);
 }
 
@@ -148,30 +189,29 @@ function getUserInput() {
 		allInput.origin = originDropdown.value;
 		allInput.key = keyDropdown.value;
 
+		iterateBpm(allInput);
 		console.log(allInput);
 	})
-	return allInput;
 }
 
 function iterateBpm(allInput) {
-	var minBpm = allInput.minBpm;
-	var maxBpm = allInput.maxBpm;
+	var minBpm = Number(allInput.minBpm);
+	var maxBpm = Number(allInput.maxBpm);
 
 	var Bpm = minBpm;
-	while (Bpm <= maxBpm) {
-		GetBpmApi(Bpm); //may need to pass allInput to GetBpmApi to filter results
+	while (Bpm <= minBpm) {//maxBpm) {
+		console.log(Bpm)
+		GetBpmApi(Bpm, allInput); //may need to pass allInput to GetBpmApi to filter results
 		Bpm++;
 	}
 }
 
 function startJamMap() {
 	initializeSliders();
-	var allInput = getUserInput();
-
+	getUserInput();
 }
 startJamMap();
 
-//GetBpmApi(100);
 
 
 
