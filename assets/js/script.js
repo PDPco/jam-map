@@ -54,16 +54,31 @@ function makeItunesCall(searchTerm, artistName) {
  *	Outputs:
  */
 function getItunesData(response) {
-	console.log(response.results)
+	//console.log(response.results)
 	var scriptEl = document.getElementsByClassName("api-call");
 	var bodyEl = document.body;
 	var searchResults = response.results;
 	var artistName = scriptEl[0].attributes.id.nodeValue;
 
-	console.log(filterResults(response.results, artistName), "filtered");	
+	var filteredResults = filterResults(response.results, artistName);	
 
 	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
-	bodyEl.removeChild(scriptElId);	
+	bodyEl.removeChild(scriptElId);
+
+	console.log(filteredResults)
+
+	var m4aURL = filteredResults[0].previewUrl;
+	var audioEl = document.createElement("audio");
+	var sourceEl = document.createElement("source");
+
+	//create audio element function
+	//display results to html function
+	audioEl.setAttribute("controls", "");
+	sourceEl.setAttribute("src", m4aURL);
+	sourceEl.setAttribute("type", "audio/mp4")
+	audioEl.appendChild(sourceEl);
+	
+	bodyEl.appendChild(audioEl);
 
 }
 
@@ -105,10 +120,14 @@ function parseBpmResults(bpmObjArr) {
 
 		searchString = plusDelimitString(searchString);
 		console.log(searchString)
+		displayResults(bpmObjArr);
 		makeItunesCall(searchString, artistName);
 	}	
 }
 
+function displayResults(bpmObjArr) {
+
+}
 
 function plusDelimitString(str) {
 	var tempArr = str.split(" ");
