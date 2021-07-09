@@ -23,6 +23,16 @@ const keyDropdown = document.getElementById('keyDropdown')
 // BUTTON SELECTOR 
 const submitBTN = document.getElementById('submitBTN')
 
+localStorage.clear()
+
+var prevSearch;
+if(localStorage.getItem("previousSearch")) {
+	prevSearch = JSON.parse(localStorage.getItem("previousSearch"))
+} else {
+	prevCities = []
+}
+
+
 
 /* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
  * run into issues with CORS not being enable on iTunes side. Instead of fetch, we have to create
@@ -191,6 +201,8 @@ function getUserInput() {
 
 		iterateBpm(allInput);
 		console.log(allInput);
+		localStorage.setItem("previousSearch", JSON.stringify(allInput))
+		// Possibly add setitems for local storage to save all inputs from user
 	})
 }
 
@@ -215,62 +227,20 @@ startJamMap();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ------------------------ START OF NEW WORK SPACE ----------
 
 console.log(genreDropdown.value)
 
+/*
+To initialize the fetch from getsongbpm api and print response and data to console for access.
+input: 
+-integer parameter which is defined by the user input
+- userInput which is defined by user through selectors
 
+output:
+createArrObj saved to filtered arr and printed to console with retrieved results or no results found
+
+*/ 
 
 function GetBpmApi(integer, userInput) {
     fetch(`https://api.getsongbpm.com/tempo/?api_key=893450d85c97cdffba8a49349f3d8974&bpm=${integer}`)
@@ -290,10 +260,19 @@ function GetBpmApi(integer, userInput) {
     })
 }
 
+/*
+Initializes a for loop to filter data give to retrieve results that match the user criteria
+
+input: 
+-inputData = data meant to be filtered through, which would be results from fetch of getsongbpm
+-userInput = matches from the user input of what desired results should meet. which would be allInput defined above line 175.
+
+output: object that meets all parameters set within if statement. pushed to the array where sorted and then returned within an array, arrayOfObjects
+*/
+
 function createArrObj(inputData, userInput){
     var arrayOfObjects = [];
-	console.log(inputData.tempo[0].artist.genres.includes(userInput.genre))
-	console.log(userInput.genre)
+	
     for(i=0; i < inputData.tempo.length; i++) {
 		var parsedInt = parseInt(inputData.tempo[i].album.year)
 		var userParsedMinInt = parseInt(userInput.minYear)
@@ -301,7 +280,12 @@ function createArrObj(inputData, userInput){
 		if(inputData.tempo[i].artist.genres === null){
 			continue;
 		}
-		if(inputData.tempo[i].artist.genres.includes(userInput.genre) && inputData.tempo[i].artist.from.includes(userInput.origin) && parsedInt > userParsedMinInt && parsedInt < userParsedMaxInt) { // need to write functionality for taking the specified year
+		if(userParsedMinInt > userParsedMaxInt) {
+			console.log('Your minimum year must be smaller than your maxmimum')
+			return;
+		}
+		// ADDED CONSOLE LOG FOR WHEN SLIDER OF MIN IS BIGGER THAN MAX.
+		if(inputData.tempo[i].artist.genres.includes(userInput.genre) && inputData.tempo[i].artist.from.includes(userInput.origin) && parsedInt >= userParsedMinInt && parsedInt <= userParsedMaxInt) { // need to write functionality for taking the specified year
 			songInfo = {
 				name: inputData.tempo[i].artist.name,
 				mbid: inputData.tempo[i].artist.mbid,
@@ -314,10 +298,8 @@ function createArrObj(inputData, userInput){
 			arrayOfObjects.push(songInfo)
 			console.log(songInfo)
 		}
-    }
-	console.log(userParsedMinInt)
-	console.log(userParsedMaxInt)
-	console.log(arrayOfObjects)
+	}
+	console.log(arrayOfObjects.length)
     return arrayOfObjects;
 }
 
