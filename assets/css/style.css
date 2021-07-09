@@ -1,3 +1,5 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
+
 :root {
     background-color:white;
 }
@@ -64,3 +66,96 @@ option {
     flex-direction: row;
 }
 
+/* Test */
+
+@-webkit-keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  body {
+    background: #fafafa;
+  }
+  
+  .music-card {
+    margin: 100px auto;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    position: relative;
+    width: 300px;
+    height: 500px;
+  }
+  .music-card > .image img {
+    position: absolute;
+    z-index: 1;
+    opacity: 0.3;
+    height: 300px;
+    width: 300px;
+  }
+  .music-card > .image:after {
+    height: 100px;
+    content: "";
+    top: 200px;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    background: linear-gradient(rgba(221, 65, 127, 0), #DD417F);
+  }
+  .music-card > .wave {
+    position: absolute;
+    height: 750px;
+    width: 750px;
+    opacity: 0.6;
+    left: 0;
+    top: 0;
+    margin-left: -70%;
+    margin-top: -130%;
+    border-radius: 40%;
+    background: radial-gradient(#B01DE8, #F34235);
+    -webkit-animation: spin 3000ms infinite linear;
+            animation: spin 3000ms infinite linear;
+  }
+  .music-card > .wave:nth-child(2) {
+    top: 10px;
+    -webkit-animation: spin 4000ms infinite linear;
+            animation: spin 4000ms infinite linear;
+  }
+  .music-card > .wave:nth-child(3) {
+    top: 10px;
+    -webkit-animation: spin 5000ms infinite linear;
+            animation: spin 5000ms infinite linear;
+  }
+  .music-card > .info {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  .music-card > .info > .title {
+    font-size: 1.3em;
+    font-weight: 400;
+    font-family: "Playfair display";
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .music-card > .info > .artist {
+    font-family: "Source sans pro";
+    color: #cfcfcf;
+    font-size: 0.8em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
