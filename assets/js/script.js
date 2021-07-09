@@ -191,6 +191,7 @@ function getUserInput() {
 
 		iterateBpm(allInput);
 		console.log(allInput);
+		// Possibly add setitems for local storage to save all inputs from user
 	})
 }
 
@@ -215,62 +216,20 @@ startJamMap();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ------------------------ START OF NEW WORK SPACE ----------
 
 console.log(genreDropdown.value)
 
+/*
+To initialize the fetch from getsongbpm api and print response and data to console for access.
+input: 
+-integer parameter which is defined by the user input
+- userInput which is defined by user through selectors
 
+output:
+createArrObj saved to filtered arr and printed to console with retrieved results or no results found
+
+*/ 
 
 function GetBpmApi(integer, userInput) {
     fetch(`https://api.getsongbpm.com/tempo/?api_key=893450d85c97cdffba8a49349f3d8974&bpm=${integer}`)
@@ -289,6 +248,16 @@ function GetBpmApi(integer, userInput) {
 		 }
     })
 }
+
+/*
+Initializes a for loop to filter data give to retrieve results that match the user criteria
+
+input: 
+-inputData = data meant to be filtered through, which would be results from fetch of getsongbpm
+-userInput = matches from the user input of what desired results should meet. which would be allInput defined above line 175.
+
+output: object that meets all parameters set within if statement. pushed to the array where sorted and then returned within an array, arrayOfObjects
+*/
 
 function createArrObj(inputData, userInput){
     var arrayOfObjects = [];
