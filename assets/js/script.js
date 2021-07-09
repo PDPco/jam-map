@@ -23,33 +23,32 @@ const keyDropdown = document.getElementById('keyDropdown')
 // BUTTON SELECTOR 
 const submitBTN = document.getElementById('submitBTN')
 
-localStorage.clear()
-
 var prevSearch;
-if(localStorage.getItem("previousSearch")) {
-	prevSearch = JSON.parse(localStorage.getItem("previousSearch"))
+if(localStorage.getItem("previousSearch")){
+	prevSearch = JSON.parse(localStorage.getItem('previousSearch'))
 } else {
-	prevCities = []
+	prevSearch = []
 }
 
 
+localStorage.clear()
 
 /* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
- * run into issues with CORS not being enable on iTunes side. Instead of fetch, we have to create
- * a script tag with the src attribute set to the url for the api call, containing a parameter (callback)
- * which calls getItunesData to receive the response. The script tag is made with the id attribute
- * set to artistName so that it can be grabbed in a later function and removed from the DOM.
- * 	Inputs:
- * 		searchTerm (String): search term which should be "(artist)+(song name)"
- * 		artistName (String): the name of the artist
- *	Outputs:
- *		None
- */
+* run into issues with CORS not being enable on iTunes side. Instead of fetch, we have to create
+* a script tag with the src attribute set to the url for the api call, containing a parameter (callback)
+* which calls getItunesData to receive the response. The script tag is made with the id attribute
+* set to artistName so that it can be grabbed in a later function and removed from the DOM.
+* 	Inputs:
+* 		searchTerm (String): search term which should be "(artist)+(song name)"
+* 		artistName (String): the name of the artist
+*	Outputs:
+*		None
+*/
 function makeItunesCall(searchTerm, artistName) {
 	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
 	var scriptEl = document.createElement("script");
 	var bodyEl = document.body;
-
+	
 	scriptEl.setAttribute("src", fullUrl);
 	scriptEl.setAttribute("class", "api-call");
 	scriptEl.setAttribute("id", artistName);
@@ -57,30 +56,30 @@ function makeItunesCall(searchTerm, artistName) {
 }
 
 /* getItunesData takes the response from iTunes after the HTML script tag is generated and filters
- * the results to make sure only the desired artist shows in the results. The function also
- * takes care of removing the created script tag for the itunes call. 
- *	Inputs:
- *		response: response from the iTunes call
- *	Outputs:
- */
+* the results to make sure only the desired artist shows in the results. The function also
+* takes care of removing the created script tag for the itunes call. 
+*	Inputs:
+*		response: response from the iTunes call
+*	Outputs:
+*/
 function getItunesData(response) {
 	//console.log(response.results)
 	var scriptEl = document.getElementsByClassName("api-call");
 	var bodyEl = document.body;
 	var searchResults = response.results;
 	var artistName = scriptEl[0].attributes.id.nodeValue;
-
+	
 	var filteredResults = filterResults(response.results, artistName);	
-
+	
 	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
 	bodyEl.removeChild(scriptElId);
-
+	
 	console.log(filteredResults)
-
+	
 	var m4aURL = filteredResults[0].previewUrl;
 	var audioEl = document.createElement("audio");
 	var sourceEl = document.createElement("source");
-
+	
 	//create audio element function
 	//display results to html function
 	audioEl.setAttribute("controls", "");
@@ -89,17 +88,17 @@ function getItunesData(response) {
 	audioEl.appendChild(sourceEl);
 	
 	bodyEl.appendChild(audioEl);
-
+	
 }
 
 /* filterResults ensures that the array from the iTunes api call contains only the artist given as searchTerm in makeItunesCall.
- * Artists that are not in searchTerm will be remove from the array.
- *	Inputs:
- *		arr (Array): array which contains all the results from the iTunes api call
- *		artistName (String):
- *	Outputs:
- *		arr (Array): array with elements not containing artistName removed
- */
+* Artists that are not in searchTerm will be remove from the array.
+*	Inputs:
+*		arr (Array): array which contains all the results from the iTunes api call
+*		artistName (String):
+*	Outputs:
+*		arr (Array): array with elements not containing artistName removed
+*/
 function filterResults(arr, artistName) {
 	//console.log(arr)
 	for (var i = 0; i < arr.length; i++) {
@@ -112,12 +111,12 @@ function filterResults(arr, artistName) {
 }
 
 /* parseBpmResults receives an array of objects from the GetBPM api call and creates and formats a string to be used in the 
- * iTunes api call.
- * 	Inputs:
- * 		bpmObjArr (Array): data container for a specific song containing name, songName, mbid, genres, year, and from
- * 	Outputs:
- * 		None
- */
+* iTunes api call.
+* 	Inputs:
+* 		bpmObjArr (Array): data container for a specific song containing name, songName, mbid, genres, year, and from
+* 	Outputs:
+* 		None
+*/
 function parseBpmResults(bpmObjArr) {
 	var limit = 0;
 	for (var i = 0; i < bpmObjArr.length; i++) {
@@ -127,7 +126,7 @@ function parseBpmResults(bpmObjArr) {
 		var artistName = bpmObjArr[i].name;
 		var songName = bpmObjArr[i].songName;
 		var searchString = artistName + " " + songName;
-
+		
 		searchString = plusDelimitString(searchString);
 		console.log(searchString)
 		displayResults(bpmObjArr);
@@ -137,7 +136,7 @@ function parseBpmResults(bpmObjArr) {
 
 function displayResults(bpmObjArr) {
 	//Create pointers to elements
-
+	
 	//Iterate thorugh bpmObjArr and place info in elements
 }
 
@@ -147,12 +146,12 @@ function plusDelimitString(str) {
 }
 
 /* initializeSliders creates pointers to the HTML slider elements and calls updateSliderLabel
- * to initialize the slider event listeners so that the labels are updated on the page
- * 	Inputs:
- * 		None
- * 	Outputs:
- * 		None
- */
+* to initialize the slider event listeners so that the labels are updated on the page
+* 	Inputs:
+* 		None
+* 	Outputs:
+* 		None
+*/
 function initializeSliders() {
 	console.log("im in")
 	updateSilderLabel(minBPMRange, maxBPMRange, MinBPMValue, MaxBPMValue);
@@ -160,15 +159,15 @@ function initializeSliders() {
 }
 
 /* This function generalizes the setup for creating slider event listeners
- * 	Inputs:
- *		minSlider (Object): Slider element to take user input of min value
- *		maxSlider (Object): Slider element to take user input of max value
- *		minOut	  (Object): Output element for minimum value
- *		maxOut    (Object): Output element for maximum value
- *	Outputs: 
- *		None
- */
- function updateSilderLabel(minSlider, maxSlider, minOut, maxOut) {
+* 	Inputs:
+*		minSlider (Object): Slider element to take user input of min value
+*		maxSlider (Object): Slider element to take user input of max value
+*		minOut	  (Object): Output element for minimum value
+*		maxOut    (Object): Output element for maximum value
+*	Outputs: 
+*		None
+*/
+function updateSilderLabel(minSlider, maxSlider, minOut, maxOut) {
 	minSlider.addEventListener("input", function(){
 		minOut.innerHTML = this.value;
 		minSlider.setAttribute("value", this.value);
@@ -183,33 +182,39 @@ function initializeSliders() {
 function getUserInput() {
 	console.log("im in")
 	var allInput = {minBpm: "",
-	                maxBpm: "",
-		       minYear: "",
-		       maxYear: "",
-		         genre: "",
-			origin: "",
-			   key: ""
-	}
-	submitBTN.addEventListener("click", function(){
-		allInput.minBpm = minBPMRange.value;//getAttribute("value");
-		allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
-		allInput.minYear = minYearRange.value;//getAttribute("value");
-		allInput.maxYear = maxYearRange.value;//getAttribute("value");
-		allInput.genre = genreDropdown.value;
-		allInput.origin = originDropdown.value;
-		allInput.key = keyDropdown.value;
+	maxBpm: "",
+	minYear: "",
+	maxYear: "",
+	genre: "",
+	origin: "",
+	key: ""
+}
+submitBTN.addEventListener("click", function(event){
+	event.preventDefault();
+	allInput.minBpm = minBPMRange.value;//getAttribute("value");
+	allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
+	allInput.minYear = minYearRange.value;//getAttribute("value");
+	allInput.maxYear = maxYearRange.value;//getAttribute("value");
+	allInput.genre = genreDropdown.value;
+	allInput.origin = originDropdown.value;
+	allInput.key = keyDropdown.value;
+	
+	iterateBpm(allInput);
+	console.log(allInput);
+	// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
+	prevSearch.push(allInput) // push allInput object to empty global array and saves array to localstorage
+	console.log(prevSearch)
+	localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
+	createSearchHistory()
 
-		iterateBpm(allInput);
-		console.log(allInput);
-		localStorage.setItem("previousSearch", JSON.stringify(allInput))
-		// Possibly add setitems for local storage to save all inputs from user
-	})
+	// Possibly add setitems for local storage to save all inputs from user
+})
 }
 
 function iterateBpm(allInput) {
 	var minBpm = Number(allInput.minBpm);
 	var maxBpm = Number(allInput.maxBpm);
-
+	
 	var Bpm = minBpm;
 	while (Bpm <= minBpm) {//maxBpm) {
 		console.log(Bpm)
@@ -303,3 +308,11 @@ function createArrObj(inputData, userInput){
     return arrayOfObjects;
 }
 
+// CREATE THE ELEMENTS FOR A SEARCH HISTORY **WIP**
+// NEXT STEP IS TO ADD SELECTORS AND CREATE ELEMENTS
+
+function createSearchHistory() {
+	for( i=0; i < prevSearch.length; i++) {
+		console.log(prevSearch[i])
+	}
+}
