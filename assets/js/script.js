@@ -282,7 +282,9 @@ function createArrObj(inputData, userInput){
 		var parsedInt = parseInt(inputData.tempo[i].album.year)
 		var userParsedMinInt = parseInt(userInput.minYear)
 		var userParsedMaxInt = parseInt(userInput.maxYear)
-		if(inputData.tempo[i].artist.genres === null){
+		// console.log(inputData.tempo[i].artist.genres.includes(userInput.genre))
+		// console.log(inputData.tempo[i].artist.from.includes(userInput.origin))
+		if(inputData.tempo[i].artist.genres === null || inputData.tempo[i].artist.from === null){
 			continue;
 		}
 		if(userParsedMinInt > userParsedMaxInt) {
@@ -301,10 +303,10 @@ function createArrObj(inputData, userInput){
 				BPM: inputData.tempo[i].artist.tempo
 			}
 			arrayOfObjects.push(songInfo)
-			console.log(songInfo)
+			// console.log(songInfo)
 		}
 	}
-	console.log(arrayOfObjects.length)
+	// console.log(arrayOfObjects.length)
     return arrayOfObjects;
 }
 
