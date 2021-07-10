@@ -23,6 +23,8 @@ const keyDropdown = document.getElementById('keyDropdown')
 // BUTTON SELECTOR 
 const submitBTN = document.getElementById('submitBTN')
 
+// ------------------------ VARIABLES USED TO SAVE TO LOCAL STORAGE ------------------//
+
 var prevSearch;
 if(localStorage.getItem("previousSearch")){
 	prevSearch = JSON.parse(localStorage.getItem('previousSearch'))
@@ -30,7 +32,6 @@ if(localStorage.getItem("previousSearch")){
 	prevSearch = [];
 }
 
-// ------------------------ VARIABLES USED TO SAVE TO LOCAL STORAGE ------------------//
 
 var bpmSearch;
 if(localStorage.getItem('bpmSearch')){
@@ -40,6 +41,8 @@ if(localStorage.getItem('bpmSearch')){
 }
 
 localStorage.clear()
+
+// -----------------------------------------------------------------------------------//
 
 var test = {
 		name: "guy",
@@ -51,7 +54,6 @@ var test = {
 		BPM: "100"
 }
 
-// -----------------------------------------------------------------------------------//
 
 function generateCard(bpmResult) {
 	//console.log(bpmResult)
