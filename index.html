@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://meyerweb.com/eric/tools/css/reset/">
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -34,13 +36,22 @@
            <output id = "MinBPMValue">100</output>
         </div>   
         
+        <div class="form-group">
+            <select class="form-select">
+              <option>Choose an option</option>
+              <option>Slack</option>
+              <option>Skype</option>
+              <option>Hipchat</option>
+            </select>
+        </div>
+
         <div class="genre dropdown">
             <label class = "label" id = "genreLabel">Genre</label>
             <select name="genre" class = "dropdownList" id="genreDropdown">
                 <option value="rock">Rock</option>
                 <option value="jazz">Jazz</option>
-                <option value="popMusic">Pop</option>
-                <option value="hipHop">Hip Hop</option>
+                <option value="pop">Pop</option>
+                <option value="hip hop">Hip Hop</option>
                 <option value="alternative">Alternative</option>
                 <option value="reggae">Reggae</option>
                 <option value="country">Country</option>
@@ -366,39 +377,40 @@
 
         <div class="resultingCards" >
 
-            <div class="card mb-3" style="max-width: 90%;">
-                <div class="row no-gutters">
-                  <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/74/InBetweenDreams.jpg" class="card-img" alt="...">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">Better Together</h5>
-                      <p class="list-group-item" id="BPM">BPM: 80</p>
-                      <p class="list-group-item" id="genre">Genre: Rock</p>
-                      <p class="list-group-item" id="year">Release Year: 2005</p>
-                      <p class="list-group-item" id="key">Key: A minor</p>
-                    </div>
-                  </div>
+
+            <div class='music-card'>
+                <div class='image'>
+                  <img src='https://images-na.ssl-images-amazon.com/images/I/513VUhBNJzL.jpg'>
                 </div>
-              </div>
-              
-              <div class="card mb-3" style="max-width: 90%;">
-                <div class="row no-gutters">
-                  <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/74/InBetweenDreams.jpg" class="card-img" alt="...">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">Better Together</h5>
-                      <p class="list-group-item" id="BPM">BPM: 80</p>
-                      <p class="list-group-item" id="genre">Genre: Rock</p>
-                      <p class="list-group-item" id="year">Release Year: 2005</p>
-                      <p class="list-group-item" id="key">Key: A minor</p>
-                    </div>
-                  </div>
+                <div class='wave'></div>
+                <div class='wave'></div>
+                <div class='wave'></div>
+                <div class='info'>
+                  <h2 class='title'>Blue Neighborhood</h2>
+                  <author class='artist'>Troye Sivan (USA)</author>
+                  <p class="songinfo" id="BPM">BPM: 80</p>
+                  <p class="songinfo" id="genre">Genre: Rock</p>
+                  <p class="songinfo" id="year">Release Year: 2005</p>
+                  <p class="songinfo" id="key">Key: A minor</p>
                 </div>
-              </div>
+            </div>
+
+            <div class='music-card'>
+                <div class='image'>
+                  <img src='https://images-na.ssl-images-amazon.com/images/I/513VUhBNJzL.jpg'>
+                </div>
+                <div class='wave'></div>
+                <div class='wave'></div>
+                <div class='wave'></div>
+                <div class='info'>
+                  <h2 class='title'>Blue Neighborhood</h2>
+                  <author class='artist'>Troye Sivan (USA)</author>
+                  <p class="songinfo" id="BPM">BPM: 80</p>
+                  <p class="songinfo" id="genre">Genre: Rock</p>
+                  <p class="songinfo" id="year">Release Year: 2005</p>
+                  <p class="songinfo" id="key">Key: A minor</p>
+                </div>
+            </div>
 
         </div>
 
