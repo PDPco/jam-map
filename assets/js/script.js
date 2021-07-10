@@ -27,9 +27,17 @@ var prevSearch;
 if(localStorage.getItem("previousSearch")){
 	prevSearch = JSON.parse(localStorage.getItem('previousSearch'))
 } else {
-	prevSearch = []
+	prevSearch = [];
 }
 
+// ------------------------ VARIABLES USED TO SAVE TO LOCAL STORAGE ------------------//
+
+var bpmSearch;
+if(localStorage.getItem('bpmSearch')){
+	bpmSearch = JSON.parse(localStorage.getItem('bpmSearch'))
+} else {
+	bpmSearch = [];
+}
 
 localStorage.clear()
 
@@ -42,6 +50,8 @@ var test = {
 		origin: "US",
 		BPM: "100"
 }
+
+// -----------------------------------------------------------------------------------//
 
 function generateCard(bpmResult) {
 	//console.log(bpmResult)
@@ -355,7 +365,7 @@ function GetBpmApi(integer, userInput) {
 		 if (objArr.length === 0) {
 		 	console.log('No results found')
 		 } else {
-		 	console.log(objArr)
+		 	// console.log(objArr)
 			parseBpmResults(objArr)
 		 }
     })
@@ -399,10 +409,11 @@ function createArrObj(inputData, userInput){
 				BPM: inputData.tempo[i].tempo
 			}
 			arrayOfObjects.push(songInfo)
-			// console.log(songInfo)
+			console.log(arrayOfObjects)
+			bpmSearch.push(songInfo)
 		}
 	}
-	// console.log(arrayOfObjects.length)
+	localStorage.setItem('bpmSearch',JSON.stringify(bpmSearch))
     return arrayOfObjects;
 }
 
@@ -413,4 +424,5 @@ function createSearchHistory() {
 	for( i=0; i < prevSearch.length; i++) {
 		console.log(prevSearch[i])
 	}
+	console.log(bpmSearch)
 }
