@@ -33,20 +33,45 @@ if(localStorage.getItem("previousSearch")){
 
 localStorage.clear()
 
+var test = {
+		name: "guy",
+		mbid: "",
+		songName: "blah",
+		year: "1990",
+		genre: "thing",
+		origin: "US",
+		BPM: "100"
+}
+generateCard(test);
 
-function generateCard() {
+function generateCard(bpmResult) {
+	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
+	var musicCard = document.getElementsByClassName('music-card');
+	var clone = musicCard[0].cloneNode(true);
+	var songName = clone.getElementsByClassName('title');
+	var songInfoArr = clone.getElementsByClassName('songinfo');
+	var artistName = clone.getElementsByClassName('artist');
+
+	clone.setAttribute('id', 'current');
+	artistName[0].innerHTML = bpmResult.name;
+	songName[0].innerHTML = bpmResult.songName;
+	songInfoArr[0].innerHTML = "BPM: " + bpmResult.BPM;
+	songInfoArr[1].innerHTML = "Genre: " + bpmResult.genre;
+	songInfoArr[2].innerHTML = "Release Year: " + bpmResult.year;
+	songInfoArr[3].innerHTML = "Key: " + "N/A";
+	
+	resultingCardsContainer[0].appendChild(clone);
+
+	makeItunesCall('michael+jackson+bad', 'michael jackson');//Test: remove later
 	//Grab onto the exemplary card, create a copy somehow, then create a pointer to the copy
 	//(Maybe use a class to define the card)
 	//Pass back the pointer to the top node, so that the rest of the tree
 	//can be accessed by displayResults
 }
 
-function displayResults(bpmResultsObjArr) {
-	//Create pointers to elements
-	var resultingCards = document.getElementsByClassName("resultingCards");
-
-	for (var i = 0; bpmResultsObjArr.length; i++) {
-		var pointers = generateCard();
+function displayResults(bpmResults) {
+	for (var i = 0; bpmResults.length; i++) {
+		generateCard(bpmResults[i]);
 	}
 
 	//Iterate thorugh bpmObjArr and place info in elements
@@ -84,13 +109,15 @@ function getItunesData(response) {
 	var bodyEl = document.body;
 	var searchResults = response.results;
 	var artistName = scriptEl[0].attributes.id.nodeValue;
+	//need to print itunes data to this pointer
+	var resultCard = document.getElementById('current');
 	
 	var filteredResults = filterResults(response.results, artistName);	
 	
 	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
 	bodyEl.removeChild(scriptElId);
 	
-	console.log(filteredResults)
+	//console.log(filteredResults)
 	
 	var m4aURL = filteredResults[0].previewUrl;
 	var audioEl = document.createElement("audio");
@@ -213,7 +240,7 @@ function getUserInput() {
 		allInput.genre = genreDropdown.value;
 		allInput.origin = originDropdown.value;
 		allInput.key = keyDropdown.value;
-		
+
 		iterateBpm(allInput);
 		console.log(allInput);
 		// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
@@ -221,7 +248,7 @@ function getUserInput() {
 		console.log(prevSearch)
 		localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
 		createSearchHistory()
-	
+
 		// Possibly add setitems for local storage to save all inputs from user
 	})
 }
