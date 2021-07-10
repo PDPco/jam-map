@@ -23,15 +23,26 @@ const keyDropdown = document.getElementById('keyDropdown')
 // BUTTON SELECTOR 
 const submitBTN = document.getElementById('submitBTN')
 
+// ------------------------ VARIABLES USED TO SAVE TO LOCAL STORAGE ------------------//
+
 var prevSearch;
 if(localStorage.getItem("previousSearch")){
 	prevSearch = JSON.parse(localStorage.getItem('previousSearch'))
 } else {
-	prevSearch = []
+	prevSearch = [];
 }
 
 
+var bpmSearch;
+if(localStorage.getItem('bpmSearch')){
+	bpmSearch = JSON.parse(localStorage.getItem('bpmSearch'))
+} else {
+	bpmSearch = [];
+}
+
 localStorage.clear()
+
+// -----------------------------------------------------------------------------------//
 
 var test = {
 		name: "guy",
@@ -42,9 +53,10 @@ var test = {
 		origin: "US",
 		BPM: "100"
 }
-generateCard(test);
+
 
 function generateCard(bpmResult) {
+	//console.log(bpmResult)
 	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
 	var musicCard = document.getElementsByClassName('music-card');
 	var clone = musicCard[0].cloneNode(true);
@@ -52,7 +64,8 @@ function generateCard(bpmResult) {
 	var songInfoArr = clone.getElementsByClassName('songinfo');
 	var artistName = clone.getElementsByClassName('artist');
 
-	clone.setAttribute('id', 'current');
+	clone.setAttribute('id', bpmResult.mbid);
+	clone.setAttribute('class', 'music-card');
 	artistName[0].innerHTML = bpmResult.name;
 	songName[0].innerHTML = bpmResult.songName;
 	songInfoArr[0].innerHTML = "BPM: " + bpmResult.BPM;
@@ -62,17 +75,19 @@ function generateCard(bpmResult) {
 	
 	resultingCardsContainer[0].appendChild(clone);
 
-	makeItunesCall('michael+jackson+bad', 'michael jackson');//Test: remove later
+	//makeItunesCall('jack+johnson', 'jack johnson');//Test: remove later
 	//Grab onto the exemplary card, create a copy somehow, then create a pointer to the copy
 	//(Maybe use a class to define the card)
 	//Pass back the pointer to the top node, so that the rest of the tree
 	//can be accessed by displayResults
 }
 
-function displayResults(bpmResults) {
-	for (var i = 0; bpmResults.length; i++) {
-		generateCard(bpmResults[i]);
-	}
+function displayResult(bpmResult) {
+	generateCard(bpmResult);
+	//var displayLimit = 1
+	//for (var i = 0; i < displayLimit; i++) {
+	//	generateCard(bpmResults[i]);
+	//}
 
 	//Iterate thorugh bpmObjArr and place info in elements
 }
@@ -88,11 +103,15 @@ function displayResults(bpmResults) {
 function filterResults(arr, artistName) {
 	//console.log(arr)
 	for (var i = 0; i < arr.length; i++) {
-		if (arr[i].artistName !== artistName) {
-			arr.splice(i, i+1);
-			i--;
+		//if (arr[i].artistName !== artistName) {
+		//	arr.splice(i, i+1);
+		//	i--;
+		//}
+		if (arr[i].artistName === artistName) {
+			return [arr[i]];
 		}
 	}
+
 	return arr;
 }
 
@@ -104,36 +123,53 @@ function filterResults(arr, artistName) {
 *	Outputs:
 */
 function getItunesData(response) {
-	//console.log(response.results)
+	var scriptEl
 	var scriptEl = document.getElementsByClassName("api-call");
 	var bodyEl = document.body;
+	//console.log(response.resultCount)
 	var searchResults = response.results;
 	var artistName = scriptEl[0].attributes.id.nodeValue;
+	var mbid = scriptEl[0].getAttribute('data-mbid');
 	//need to print itunes data to this pointer
-	var resultCard = document.getElementById('current');
-	
-	var filteredResults = filterResults(response.results, artistName);	
+	var musicCard = document.getElementById(mbid);
+
+	console.log(response.results, 'hello')
+	var filteredResults = filterResults(searchResults, artistName);	
 	
 	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
 	bodyEl.removeChild(scriptElId);
 	
-	//console.log(filteredResults)
+	//console.log(filteredResults, 'filtered')
 	
+	var imgEl = musicCard.getElementsByTagName('img')[0];	
+	var artworkURL = filteredResults[0].artworkUrl100;
+
+	imgEl.setAttribute('src', artworkURL);
+
 	var m4aURL = filteredResults[0].previewUrl;
-	var audioEl = document.createElement("audio");
-	var sourceEl = document.createElement("source");
 	
 	//create audio element function
 	//display results to html function
-	audioEl.setAttribute("controls", "");
-	sourceEl.setAttribute("src", m4aURL);
-	sourceEl.setAttribute("type", "audio/mp4")
-	audioEl.appendChild(sourceEl);
-	
-	bodyEl.appendChild(audioEl);
-	
+	//audioEl.setAttribute("controls", "");
+	//sourceEl.setAttribute("src", m4aURL);
+	//sourceEl.setAttribute("type", "audio/mp4")
+	//audioEl.appendChild(sourceEl);
+
+
+	//musicCard.children[4].appendChild(audioEl);
+	console.log(musicCard.children[4].children)
+
+	var audioEl = musicCard.children[4].children[6];
+	audioEl.setAttribute('src', m4aURL);
+	audioEl.setAttribute('controls', '');
+	audioEl.setAttribute('type', 'audio/mp4');
+
+	//bodyEl.appendChild(audioEl);
 }
 
+async function getItunesData2(response) {
+	return response;	
+}
 /* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
  * run into issues with CORS not being enable on iTunes side. Instead of fetch, we have to create
  * a script tag with the src attribute set to the url for the api call, containing a parameter (callback)
@@ -145,15 +181,18 @@ function getItunesData(response) {
  *	Outputs:
  *		None
  */
-function makeItunesCall(searchTerm, artistName) {
+async function makeItunesCall(searchTerm, artistName, bpmResult) {
 	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
 	var scriptEl = document.createElement("script");
 	var bodyEl = document.body;
 
 	scriptEl.setAttribute("src", fullUrl);
-	scriptEl.setAttribute("class", "api-call");
+	scriptEl.setAttribute('data-mbid', bpmResult.mbid);
 	scriptEl.setAttribute("id", artistName);
+	scriptEl.setAttribute("class", "api-call");
+	scriptEl.setAttribute("async", "");
 	bodyEl.appendChild(scriptEl);
+	return;
 }
 
 /* plusDelimitString takes in `str` which is assumed to be the artist and song name delimited by spaces and replaces
@@ -177,10 +216,10 @@ function plusDelimitString(str) {
  * 	Outputs:
  * 		None
  */
-function parseBpmResults(bpmResults) {
-	var limit = 0;
+async function parseBpmResults(bpmResults) {
+	var limit = 5;
 	for (var i = 0; i < bpmResults.length; i++) {
-		if (i > limit) {
+		if (i >= limit) {
 			break;
 		}
 		var artistName = bpmResults[i].name;
@@ -189,8 +228,10 @@ function parseBpmResults(bpmResults) {
 		
 		searchString = plusDelimitString(searchString);
 		console.log(searchString)
-		makeItunesCall(searchString, artistName);
-		displayResults(bpmResults);
+		//makeItunesCall(searchString, artistName);
+		displayResult(bpmResults[i]);
+		await makeItunesCall(searchString, artistName, bpmResults[i]);
+
 	}	
 }
 
@@ -214,6 +255,18 @@ function iterateBpm(allInput) {
 	}
 }
 
+function clearResults() {
+	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
+	var resultingCardsLength = resultingCardsContainer[0].children.length;
+	resultingCardsContainer[0].children[resultingCardsLength-1].setAttribute('class', 'music-card hide');
+	console.log(resultingCardsContainer)
+
+	while (resultingCardsContainer[0].children.length !== 1) {
+	//clear all but the first card since we need to clone it
+		resultingCardsContainer[0].children[0].remove();
+	}
+}
+
 /* getUserInput waits for the user to submit their input values and those chosen values are stored in an
  * object used by iterateBpm and GetBpmApi.
  *	Inputs:
@@ -233,6 +286,7 @@ function getUserInput() {
 	}
 	submitBTN.addEventListener("click", function(event){
 		event.preventDefault();
+		clearResults();
 		allInput.minBpm = minBPMRange.value;//getAttribute("value");
 		allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
 		allInput.minYear = minYearRange.value;//getAttribute("value");
@@ -322,7 +376,7 @@ function GetBpmApi(integer, userInput) {
 		 if (objArr.length === 0) {
 		 	console.log('No results found')
 		 } else {
-		 	console.log(objArr)
+		 	// console.log(objArr)
 			parseBpmResults(objArr)
 		 }
     })
@@ -340,7 +394,7 @@ output: object that meets all parameters set within if statement. pushed to the 
 
 function createArrObj(inputData, userInput){
     var arrayOfObjects = [];
-	
+	console.log(inputData.tempo.length)
     for(i=0; i < inputData.tempo.length; i++) {
 		var parsedInt = parseInt(inputData.tempo[i].album.year)
 		var userParsedMinInt = parseInt(userInput.minYear)
@@ -363,13 +417,14 @@ function createArrObj(inputData, userInput){
 				year: inputData.tempo[i].album.year,
 				genre: inputData.tempo[i].artist.genres,
 				origin: inputData.tempo[i].artist.from,
-				BPM: inputData.tempo[i].artist.tempo
+				BPM: inputData.tempo[i].tempo
 			}
 			arrayOfObjects.push(songInfo)
-			// console.log(songInfo)
+			console.log(arrayOfObjects)
+			bpmSearch.push(songInfo)
 		}
 	}
-	// console.log(arrayOfObjects.length)
+	localStorage.setItem('bpmSearch',JSON.stringify(bpmSearch))
     return arrayOfObjects;
 }
 
@@ -380,4 +435,5 @@ function createSearchHistory() {
 	for( i=0; i < prevSearch.length; i++) {
 		console.log(prevSearch[i])
 	}
+	console.log(bpmSearch)
 }
