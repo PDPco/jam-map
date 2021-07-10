@@ -340,7 +340,7 @@ output: object that meets all parameters set within if statement. pushed to the 
 
 function createArrObj(inputData, userInput){
     var arrayOfObjects = [];
-	
+	console.log(inputData.tempo.length)
     for(i=0; i < inputData.tempo.length; i++) {
 		var parsedInt = parseInt(inputData.tempo[i].album.year)
 		var userParsedMinInt = parseInt(userInput.minYear)
@@ -363,7 +363,7 @@ function createArrObj(inputData, userInput){
 				year: inputData.tempo[i].album.year,
 				genre: inputData.tempo[i].artist.genres,
 				origin: inputData.tempo[i].artist.from,
-				BPM: inputData.tempo[i].artist.tempo
+				BPM: inputData.tempo[i].tempo
 			}
 			arrayOfObjects.push(songInfo)
 			// console.log(songInfo)
