@@ -23,15 +23,26 @@ const keyDropdown = document.getElementById('keyDropdown')
 // BUTTON SELECTOR 
 const submitBTN = document.getElementById('submitBTN')
 
+// ------------------------ VARIABLES USED TO SAVE TO LOCAL STORAGE ------------------//
+
 var prevSearch;
 if(localStorage.getItem("previousSearch")){
 	prevSearch = JSON.parse(localStorage.getItem('previousSearch'))
 } else {
-	prevSearch = []
+	prevSearch = [];
 }
 
 
+var bpmSearch;
+if(localStorage.getItem('bpmSearch')){
+	bpmSearch = JSON.parse(localStorage.getItem('bpmSearch'))
+} else {
+	bpmSearch = [];
+}
+
 localStorage.clear()
+
+// -----------------------------------------------------------------------------------//
 
 var test = {
 		name: "guy",
@@ -42,6 +53,7 @@ var test = {
 		origin: "US",
 		BPM: "100"
 }
+
 
 function generateCard(bpmResult) {
 	//console.log(bpmResult)
@@ -364,7 +376,7 @@ function GetBpmApi(integer, userInput) {
 		 if (objArr.length === 0) {
 		 	console.log('No results found')
 		 } else {
-		 	console.log(objArr)
+		 	// console.log(objArr)
 			parseBpmResults(objArr)
 		 }
     })
@@ -382,7 +394,7 @@ output: object that meets all parameters set within if statement. pushed to the 
 
 function createArrObj(inputData, userInput){
     var arrayOfObjects = [];
-	
+	console.log(inputData.tempo.length)
     for(i=0; i < inputData.tempo.length; i++) {
 		var parsedInt = parseInt(inputData.tempo[i].album.year)
 		var userParsedMinInt = parseInt(userInput.minYear)
@@ -405,13 +417,14 @@ function createArrObj(inputData, userInput){
 				year: inputData.tempo[i].album.year,
 				genre: inputData.tempo[i].artist.genres,
 				origin: inputData.tempo[i].artist.from,
-				BPM: inputData.tempo[i].artist.tempo
+				BPM: inputData.tempo[i].tempo
 			}
 			arrayOfObjects.push(songInfo)
-			// console.log(songInfo)
+			console.log(arrayOfObjects)
+			bpmSearch.push(songInfo)
 		}
 	}
-	// console.log(arrayOfObjects.length)
+	localStorage.setItem('bpmSearch',JSON.stringify(bpmSearch))
     return arrayOfObjects;
 }
 
@@ -422,4 +435,5 @@ function createSearchHistory() {
 	for( i=0; i < prevSearch.length; i++) {
 		console.log(prevSearch[i])
 	}
+	console.log(bpmSearch)
 }
