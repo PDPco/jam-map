@@ -1,8 +1,7 @@
-@import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
 
-:root {
-    background-color:white;
-}
+body {
+    background-color: #0D1821);
+  }
 
 .searchPreferences {
     display: flex;
@@ -20,41 +19,69 @@
 
 .slider {
     -webkit-appearance: none;
-    width: 50%;
-    height: 25px;
-    background: #d3d3d3;
+    width: 92%;
+    height: 40px;
+    background: #0D1821;
+    border:solid gray;
     outline:none;
-    opacity: 0.7;
     -webkit-transition: .2s;
-    transition: opacity .2s;
+    border-radius: 4px;
+}
+
+/* input[type=range]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 5px;
+    background: white;
+    border: none;
+    border-radius: 3px;
+} */
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 33px;
+    width: 33px;
+    border-radius: 50%;
+    background: goldenrod;
+    }
+
+    ::marker {
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+    white-space: pre;
+    text-transform: none;
+    color: blueviolet;
+    width: 70px;
+    }
+
+.select{
+    display: flex;
+    flex-direction: column;
+    margin: 1%;
+    width: 90%;
 }
 
 .dropdown {
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
-    padding: 1%;
+    margin-left: 1%;
 }
 
-.dropdownList {
-    -webkit-appearance: none;
-    width: 50%;
-    height: 25px;
-    background-color: #e0e0e0;
-    border: none;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 90%;
-    font-weight: lighter;
+.select:not(.is-multiple):not(.is-loading)::after {
+    border-color: limegreen;
+    right: 1.125em;
+    z-index: 4;
 }
 
-option {
-    color: green;
-}
+input, .select select, .textarea {
+    background-color:pink;
+    border-color: black;
+    color: blue;
+    }
 
-#minYearLabel, #maxYearLabel, #maxBPMLabel, #minBPMLabel{
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: lighter;
-    font-size: 90%;
+#submitBTN {
+    width: 20%;
+    margin-left: 1%;
+    margin-top: 20px;
 }
 
 .searchResults {
@@ -68,7 +95,7 @@ option {
 
 /* Test */
 
-@-webkit-keyframes spin {
+/* @-webkit-keyframes spin {
     0% {
       transform: rotate(0deg);
     }
@@ -158,4 +185,4 @@ option {
     font-size: 0.8em;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-  }
+  } */
