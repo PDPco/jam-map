@@ -197,33 +197,33 @@ function iterateBpm(allInput) {
 function getUserInput() {
 	console.log("im in")
 	var allInput = {minBpm: "",
-	maxBpm: "",
-	minYear: "",
-	maxYear: "",
-	genre: "",
-	origin: "",
-	key: ""
-}
-submitBTN.addEventListener("click", function(event){
-	event.preventDefault();
-	allInput.minBpm = minBPMRange.value;//getAttribute("value");
-	allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
-	allInput.minYear = minYearRange.value;//getAttribute("value");
-	allInput.maxYear = maxYearRange.value;//getAttribute("value");
-	allInput.genre = genreDropdown.value;
-	allInput.origin = originDropdown.value;
-	allInput.key = keyDropdown.value;
+			maxBpm: "",
+			minYear: "",
+			maxYear: "",
+			genre: "",
+			origin: "",
+			key: ""
+	}
+	submitBTN.addEventListener("click", function(event){
+		event.preventDefault();
+		allInput.minBpm = minBPMRange.value;//getAttribute("value");
+		allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
+		allInput.minYear = minYearRange.value;//getAttribute("value");
+		allInput.maxYear = maxYearRange.value;//getAttribute("value");
+		allInput.genre = genreDropdown.value;
+		allInput.origin = originDropdown.value;
+		allInput.key = keyDropdown.value;
+		
+		iterateBpm(allInput);
+		console.log(allInput);
+		// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
+		prevSearch.push(allInput) // push allInput object to empty global array and saves array to localstorage
+		console.log(prevSearch)
+		localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
+		createSearchHistory()
 	
-	iterateBpm(allInput);
-	console.log(allInput);
-	// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
-	prevSearch.push(allInput) // push allInput object to empty global array and saves array to localstorage
-	console.log(prevSearch)
-	localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
-	createSearchHistory()
-
-	// Possibly add setitems for local storage to save all inputs from user
-})
+		// Possibly add setitems for local storage to save all inputs from user
+	})
 }
 
 /* This function generalizes the setup for creating slider event listeners
