@@ -53,6 +53,7 @@ function generateCard(bpmResult) {
 	var artistName = clone.getElementsByClassName('artist');
 
 	clone.setAttribute('id', bpmResult.mbid);
+	clone.setAttribute('class', 'music-card');
 	artistName[0].innerHTML = bpmResult.name;
 	songName[0].innerHTML = bpmResult.songName;
 	songInfoArr[0].innerHTML = "BPM: " + bpmResult.BPM;
@@ -133,9 +134,7 @@ function getItunesData(response) {
 
 	imgEl.setAttribute('src', artworkURL);
 
-	//var m4aURL = filteredResults[0].previewUrl;
-	//var audioEl = document.createElement("audio");
-	//var sourceEl = document.createElement("source");
+	var m4aURL = filteredResults[0].previewUrl;
 	
 	//create audio element function
 	//display results to html function
@@ -143,6 +142,15 @@ function getItunesData(response) {
 	//sourceEl.setAttribute("src", m4aURL);
 	//sourceEl.setAttribute("type", "audio/mp4")
 	//audioEl.appendChild(sourceEl);
+
+
+	//musicCard.children[4].appendChild(audioEl);
+	console.log(musicCard.children[4].children)
+
+	var audioEl = musicCard.children[4].children[6];
+	audioEl.setAttribute('src', m4aURL);
+	audioEl.setAttribute('controls', '');
+	audioEl.setAttribute('type', 'audio/mp4');
 
 	//bodyEl.appendChild(audioEl);
 }
@@ -237,7 +245,8 @@ function iterateBpm(allInput) {
 
 function clearResults() {
 	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
-
+	var resultingCardsLength = resultingCardsContainer[0].children.length;
+	resultingCardsContainer[0].children[resultingCardsLength-1].setAttribute('class', 'music-card hide');
 	console.log(resultingCardsContainer)
 
 	while (resultingCardsContainer[0].children.length !== 1) {
