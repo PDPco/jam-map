@@ -234,20 +234,22 @@ function getUserInput() {
  *		None
  */
  function updateSilderLabel(minSlider, maxSlider, minOut, maxOut) {
+	var tension = 150;
+	var friction = 8;
 	minSlider.addEventListener("click", function() {
 		Velocity(minSlider, {width: "50%"}, {duration: 1000, 
-			easing: [300, 8] 
+			easing: [tension, friction] 
 		})		
 		Velocity(maxSlider, {width: "50%"}, {duration: 1000, 
-			easing: [300, 8] 
+			easing: [tension, friction] 
 		})	
 	})
 	maxSlider.addEventListener("click", function(){
 		Velocity(minSlider, {width: "50%"}, {duration: 1000, 
-			easing: [300, 8] 
+			easing: [tension, friction] 
 		})	
 		Velocity(maxSlider, {width: "50%"}, {duration: 1000, 
-			easing: [300, 8] 
+			easing: [tension, friction] 
 		})		
 	})
 	minSlider.addEventListener("input", function(){
