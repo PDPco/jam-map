@@ -44,19 +44,8 @@ localStorage.clear()
 
 // -----------------------------------------------------------------------------------//
 
-var test = {
-		name: "guy",
-		mbid: "",
-		songName: "blah",
-		year: "1990",
-		genre: "thing",
-		origin: "US",
-		BPM: "100"
-}
-
-
-function generateCard(bpmResult) {
-	//console.log(bpmResult)
+function generateCard(bpmResult, match) {
+	console.log(match)
 	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
 	var musicCard = document.getElementsByClassName('music-card');
 	var clone = musicCard[0].cloneNode(true);
@@ -75,6 +64,19 @@ function generateCard(bpmResult) {
 	
 	resultingCardsContainer[0].appendChild(clone);
 
+	console.log(musicCard)
+
+	var imgEl = clone.getElementsByTagName('img')[0];	
+	var artworkURL = match.artworkUrl100;
+	imgEl.setAttribute('src', artworkURL);
+
+	var m4aURL = match.previewUrl;
+	var audioEl = clone.getElementsByTagName('audio');
+
+	console.log(audioEl[0])
+	audioEl[0].setAttribute('src', m4aURL);
+	audioEl[0].setAttribute('controls', '');
+	audioEl[0].setAttribute('type', 'audio/mp4');
 	//makeItunesCall('jack+johnson', 'jack johnson');//Test: remove later
 	//Grab onto the exemplary card, create a copy somehow, then create a pointer to the copy
 	//(Maybe use a class to define the card)
@@ -82,15 +84,6 @@ function generateCard(bpmResult) {
 	//can be accessed by displayResults
 }
 
-function displayResult(bpmResult) {
-	generateCard(bpmResult);
-	//var displayLimit = 1
-	//for (var i = 0; i < displayLimit; i++) {
-	//	generateCard(bpmResults[i]);
-	//}
-
-	//Iterate thorugh bpmObjArr and place info in elements
-}
 
 /* filterResults ensures that the array from the iTunes api call contains only the artist given as searchTerm in makeItunesCall.
  * Artists that are not in searchTerm will be remove from the array.
@@ -115,61 +108,6 @@ function filterResults(arr, artistName) {
 	return arr;
 }
 
-/* getItunesData takes the response from iTunes after the HTML script tag is generated and filters
-* the results to make sure only the desired artist shows in the results. The function also
-* takes care of removing the created script tag for the itunes call. 
-*	Inputs:
-*		response: response from the iTunes call
-*	Outputs:
-*/
-function getItunesData(response) {
-	var scriptEl
-	var scriptEl = document.getElementsByClassName("api-call");
-	var bodyEl = document.body;
-	//console.log(response.resultCount)
-	var searchResults = response.results;
-	var artistName = scriptEl[0].attributes.id.nodeValue;
-	var mbid = scriptEl[0].getAttribute('data-mbid');
-	//need to print itunes data to this pointer
-	var musicCard = document.getElementById(mbid);
-
-	console.log(response.results, 'hello')
-	var filteredResults = filterResults(searchResults, artistName);	
-	
-	var scriptElId = document.getElementById(scriptEl[0].attributes.id.nodeValue);
-	bodyEl.removeChild(scriptElId);
-	
-	//console.log(filteredResults, 'filtered')
-	
-	var imgEl = musicCard.getElementsByTagName('img')[0];	
-	var artworkURL = filteredResults[0].artworkUrl100;
-
-	imgEl.setAttribute('src', artworkURL);
-
-	var m4aURL = filteredResults[0].previewUrl;
-	
-	//create audio element function
-	//display results to html function
-	//audioEl.setAttribute("controls", "");
-	//sourceEl.setAttribute("src", m4aURL);
-	//sourceEl.setAttribute("type", "audio/mp4")
-	//audioEl.appendChild(sourceEl);
-
-
-	//musicCard.children[4].appendChild(audioEl);
-	console.log(musicCard.children[4].children)
-
-	var audioEl = musicCard.children[4].children[6];
-	audioEl.setAttribute('src', m4aURL);
-	audioEl.setAttribute('controls', '');
-	audioEl.setAttribute('type', 'audio/mp4');
-
-	//bodyEl.appendChild(audioEl);
-}
-
-async function getItunesData2(response) {
-	return response;	
-}
 /* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
  * run into issues with CORS not being enable on iTunes side. Instead of fetch, we have to create
  * a script tag with the src attribute set to the url for the api call, containing a parameter (callback)
@@ -183,15 +121,26 @@ async function getItunesData2(response) {
  */
 async function makeItunesCall(searchTerm, artistName, bpmResult) {
 	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
-	var scriptEl = document.createElement("script");
-	var bodyEl = document.body;
+	$.ajax({
+		url: fullUrl,
+		dataType: 'jsonp',
 
-	scriptEl.setAttribute("src", fullUrl);
-	scriptEl.setAttribute('data-mbid', bpmResult.mbid);
-	scriptEl.setAttribute("id", artistName);
-	scriptEl.setAttribute("class", "api-call");
-	scriptEl.setAttribute("async", "");
-	bodyEl.appendChild(scriptEl);
+	}).done(function(response) {
+		//console.log(response)
+		var match;
+		var displayBool = false;
+		for (var i = 0; i < response.results.length; i++) {
+			if (response.results[i].artistName === artistName) {
+				console.log(response.results[i], artistName)
+				match = response.results[i];
+				displayBool = true;
+				break;
+			} 
+		}
+		if (displayBool) {
+			generateCard(bpmResult, match)
+		}
+	})
 	return;
 }
 
@@ -216,7 +165,7 @@ function plusDelimitString(str) {
  * 	Outputs:
  * 		None
  */
-async function parseBpmResults(bpmResults) {
+function parseBpmResults(bpmResults) {
 	var limit = 5;
 	for (var i = 0; i < bpmResults.length; i++) {
 		if (i >= limit) {
@@ -227,12 +176,9 @@ async function parseBpmResults(bpmResults) {
 		var searchString = artistName + " " + songName;
 		
 		searchString = plusDelimitString(searchString);
-		console.log(searchString)
-		//makeItunesCall(searchString, artistName);
-		displayResult(bpmResults[i]);
-		await makeItunesCall(searchString, artistName, bpmResults[i]);
+		makeItunesCall(searchString, artistName, bpmResults[i]);
 
-	}	
+	}
 }
 
 /* iterateBpm takes the object, `allInput`, containing the user chose BPM range and iterates from
@@ -420,7 +366,7 @@ function createArrObj(inputData, userInput){
 				BPM: inputData.tempo[i].tempo
 			}
 			arrayOfObjects.push(songInfo)
-			console.log(arrayOfObjects)
+			//console.log(arrayOfObjects)
 			bpmSearch.push(songInfo)
 		}
 	}
