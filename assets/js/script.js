@@ -106,14 +106,14 @@ function generateCard(bpmResult) {
  *	Outputs:
  *		None
  */
-async function makeItunesCall(searchTerm, artistName, bpmResult) {
-	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
+function makeItunesCall(searchTerm, artistName, bpmResult) {
+	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm 
+			+ "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
 	$.ajax({
 		url: fullUrl,
 		dataType: 'jsonp',
 
 	}).done(function(response) {
-		//console.log(response)
 		var match;
 		var displayBool = false;
 		for (var i = 0; i < response.results.length; i++) {
@@ -130,7 +130,6 @@ async function makeItunesCall(searchTerm, artistName, bpmResult) {
 			generateCard(bpmResult)
 		}
 	})
-	return;
 }
 
 /* plusDelimitString takes in `str` which is assumed to be the artist and song name delimited by spaces and replaces
