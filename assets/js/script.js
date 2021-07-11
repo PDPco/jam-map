@@ -77,35 +77,6 @@ function generateCard(bpmResult, match) {
 	audioEl[0].setAttribute('src', m4aURL);
 	audioEl[0].setAttribute('controls', '');
 	audioEl[0].setAttribute('type', 'audio/mp4');
-	//makeItunesCall('jack+johnson', 'jack johnson');//Test: remove later
-	//Grab onto the exemplary card, create a copy somehow, then create a pointer to the copy
-	//(Maybe use a class to define the card)
-	//Pass back the pointer to the top node, so that the rest of the tree
-	//can be accessed by displayResults
-}
-
-
-/* filterResults ensures that the array from the iTunes api call contains only the artist given as searchTerm in makeItunesCall.
- * Artists that are not in searchTerm will be remove from the array.
- *	Inputs:
- *		arr (Array): array which contains all the results from the iTunes api call
- *		artistName (String):
- *	Outputs:
- *		arr (Array): array with elements not containing artistName removed
- */
-function filterResults(arr, artistName) {
-	//console.log(arr)
-	for (var i = 0; i < arr.length; i++) {
-		//if (arr[i].artistName !== artistName) {
-		//	arr.splice(i, i+1);
-		//	i--;
-		//}
-		if (arr[i].artistName === artistName) {
-			return [arr[i]];
-		}
-	}
-
-	return arr;
 }
 
 /* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
