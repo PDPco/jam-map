@@ -29,6 +29,14 @@
     transition: opacity .2s;
 }
 
+.slider {
+  width: 0%;
+}
+
+.slider:hover {
+  cursor: pointer;
+}
+
 .dropdown {
     display: flex;
     flex-direction: column;
