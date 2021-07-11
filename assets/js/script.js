@@ -40,12 +40,11 @@ if(localStorage.getItem('bpmSearch')){
 	bpmSearch = [];
 }
 
-localStorage.clear()
+//localStorage.clear()
 
 // -----------------------------------------------------------------------------------//
 
-function generateCard(bpmResult, match) {
-	console.log(match)
+function generateCard(bpmResult) {
 	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
 	var musicCard = document.getElementsByClassName('music-card');
 	var clone = musicCard[0].cloneNode(true);
@@ -67,16 +66,33 @@ function generateCard(bpmResult, match) {
 	console.log(musicCard)
 
 	var imgEl = clone.getElementsByTagName('img')[0];	
-	var artworkURL = match.artworkUrl100;
+	var artworkURL = bpmResult.match.artworkUrl100;
 	imgEl.setAttribute('src', artworkURL);
 
-	var m4aURL = match.previewUrl;
+	var m4aURL = bpmResult.match.previewUrl;
 	var audioEl = clone.getElementsByTagName('audio');
 
 	console.log(audioEl[0])
 	audioEl[0].setAttribute('src', m4aURL);
 	audioEl[0].setAttribute('controls', '');
 	audioEl[0].setAttribute('type', 'audio/mp4');
+
+	var saveBpmResult = {mbid: bpmResult.mbid,
+			     name: bpmResult.name,
+			     songName: bpmResult.songName,
+			     BPM: bpmResult.BPM,
+			     genre: bpmResult.genre,
+			     year: bpmResult.year,
+			     match: bpmResult.match,
+			     }
+	var storage = JSON.parse(localStorage.getItem('currentResults'));
+	
+	if (storage) {
+		storage.push(saveBpmResult);
+		localStorage.setItem('currentResults', JSON.stringify(storage));
+	} else {
+		localStorage.setItem('currentResults', JSON.stringify([saveBpmResult]));
+	}
 }
 
 /* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
@@ -108,8 +124,10 @@ async function makeItunesCall(searchTerm, artistName, bpmResult) {
 				break;
 			} 
 		}
+
+		bpmResult.match = match;
 		if (displayBool) {
-			generateCard(bpmResult, match)
+			generateCard(bpmResult)
 		}
 	})
 	return;
@@ -184,6 +202,36 @@ function clearResults() {
 	}
 }
 
+function createLastResult() {
+	var lastResult = document.createElement('button');
+	var searchPref = document.getElementsByClassName('searchPreferences');
+
+	lastResult.setAttribute('type', 'button');
+
+	searchPref[0].appendChild(lastResult);
+
+	var lastResults = JSON.parse(localStorage.getItem('lastResults'));
+	var currentResults = JSON.parse(localStorage.getItem('currentResults'));
+
+	lastResults = currentResults;
+	localStorage.setItem('lastResults', JSON.stringify(lastResults));
+	localStorage.setItem('currentResults', null);	
+	
+	lastResult.addEventListener('click', function() {
+		clearResults();
+		var tempResults = currentResults;
+
+
+		localStorage.setItem('currentResults', null);
+		for (var i = 0; i < lastResults.length; i++) {
+			generateCard(lastResults[i]);
+		}
+
+		localStorage.setItem('lastResults', tempResults);
+		
+	})
+	
+}
 /* getUserInput waits for the user to submit their input values and those chosen values are stored in an
  * object used by iterateBpm and GetBpmApi.
  *	Inputs:
@@ -203,6 +251,7 @@ function getUserInput() {
 	}
 	submitBTN.addEventListener("click", function(event){
 		event.preventDefault();
+		createLastResult();
 		clearResults();
 		allInput.minBpm = minBPMRange.value;//getAttribute("value");
 		allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
