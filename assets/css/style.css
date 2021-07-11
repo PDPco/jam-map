@@ -1,6 +1,7 @@
 
 body {
-    background-color: #0D1821 ;
+    background-color: linear-gradient();
+    background-image: linear-gradient(#a3a380,#727D71);
   }
 
 .searchPreferences {
@@ -9,6 +10,8 @@ body {
     align-content: flex-start;
     margin-left: 5%;
 }
+
+
 
 .multipleSliders {
     display: flex;
@@ -20,30 +23,21 @@ body {
 .slider {
     -webkit-appearance: none;
     width: 92%;
-    height: 40px;
-    background: #0D1821;
-    border:solid gray;
+    height: 10px;
+    background: #efebce;
+    /* border:solid #D6CE93; */
     outline:none;
     -webkit-transition: .2s;
     border-radius: 4px;
 }
 
-/* input[type=range]::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
-    width: 300px;
-    height: 5px;
-    background: white;
-    border: none;
-    border-radius: 3px;
-} */
-
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
-    height: 33px;
-    width: 33px;
+    height: 30px;
+    width: 30px;
     border-radius: 50%;
-    background: goldenrod;
+    background: #D8A48F;
     }
 
     ::marker {
@@ -73,8 +67,9 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 input, .select select, .textarea {
-    background-color:pink;
+    background-color:white;
     border-color: black;
+    border-width: 4px;
     color: blue;
     }
 
@@ -95,7 +90,7 @@ input, .select select, .textarea {
 
 /* Test */
 
-/* @-webkit-keyframes spin {
+@-webkit-keyframes spin {
     0% {
       transform: rotate(0deg);
     }
@@ -111,10 +106,7 @@ input, .select select, .textarea {
       transform: rotate(360deg);
     }
   }
-  body {
-    background: #fafafa;
-  }
-  
+
   .music-card {
     margin: 100px auto;
     border-radius: 6px;
@@ -185,4 +177,4 @@ input, .select select, .textarea {
     font-size: 0.8em;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-  } */
+  }
