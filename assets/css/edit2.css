@@ -10,7 +10,6 @@ body {
     flex-shrink: 0;
     padding: 3rem 1.5rem;
     background-color: #424B54;
-
     }
 
 .title {
@@ -27,14 +26,17 @@ body {
     line-height: 1.25;
     }
 
-
+main{
+    display: inline-flex;
+}
 
 .searchPreferences {
     display: flex;
     flex-direction: column;
     align-content: flex-start;
     margin-left: 5%;
-    width: 70%;
+    width: 30%;
+    border-right-color: green;
 }
 
 .label{
@@ -91,6 +93,10 @@ input[type=range]::-webkit-slider-thumb {
     width: 100%;
 }
 
+.output {
+    margin-top: 5px;
+}
+
 .dropdown {
     /* margin-left: 1%; */
 }
@@ -111,15 +117,16 @@ input, .select select, .textarea {
 #submitBTN {
     width: 30%;
     margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .searchResults {
     margin-left: 5%;
-    margin-right: 5%;
+    /* margin-right: 5%; */
 }
 
 .resultingCards {
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
@@ -144,7 +151,7 @@ input, .select select, .textarea {
   }
 
   .music-card {
-    margin: 50px 10px;
+    margin: 10px 10px;
     border-radius: 6px;
     background: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
@@ -158,7 +165,7 @@ input, .select select, .textarea {
     z-index: 1;
     opacity: 0.3;
     height: 250px;
-    width: 250%;
+    width: 250px;
   }
   /* .music-card > .image:after {
     height: 100px;
@@ -238,13 +245,28 @@ input, .select select, .textarea {
 
 
 
+
+
+
+
+
 /* 992 */
 
 
 
 
 
+
+
+
+
   @media screen and (max-width: 992px) {
+
+    main{
+        display: block;
+    }
+
+
     .hero-body {
         flex-grow: 1;
         flex-shrink: 0;
@@ -276,6 +298,11 @@ input, .select select, .textarea {
             margin-left: 10%;
             width: 80%;
         }
+
+        .searchResults {
+            margin-left: 10%;
+            margin-right: 5%;
+        }
     
 }
 
@@ -296,84 +323,44 @@ input, .select select, .textarea {
         margin-top: 30px;
     }
 
-    @-webkit-keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
+    .searchResults {
+        margin-left: 0px;
+        /* margin-right: 5%; */
+        width: 100%;
+    }
     
-      .music-card {
-        margin: 50px 10px;
+    
+    .music-card {
+        margin: 10px 10px;
         border-radius: 6px;
         background: #fff;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
         overflow: hidden;
         position: relative;
-        margin-right: 10%;
-        margin-left: 10%;
-        width: 90%;
+        margin-right: auto;
+        margin-left: auto;
+        width: 500px;
         height: 100px;
-      }
+    }
+
       .music-card > .image img {
         position: absolute;
         z-index: 1;
         opacity: 0.3;
         height: 100px;
-        width: 100px; */
+        width: 100px;
+        
       }
-      /* .music-card > .image:after {
-        height: 100px;
-        content: "";
-        top: 200px;
-        position: absolute;
-        width: 100%;
-        z-index: 1;
-        background: linear-gradient(rgba(221, 65, 127, 0), #DD417F);
-      } */
-      .music-card > .wave {
-        position: absolute;
-        height: 570px;
-        width: 600px;
-        opacity: 0.6;
-        left: 0;
-        top: 0;
-        margin-left: -70%;
-        margin-top: -130%;
-        border-radius: 40%;
-        background: radial-gradient(#B01DE8, #F34235);
-        -webkit-animation: spin 3000ms infinite linear;
-                animation: spin 3000ms infinite linear;
-      }
-      .music-card > .wave:nth-child(2) {
-        top: 10px;
-        -webkit-animation: spin 4000ms infinite linear;
-                animation: spin 4000ms infinite linear;
-      }
-      .music-card > .wave:nth-child(3) {
-        top: 10px;
-        -webkit-animation: spin 5000ms infinite linear;
-                animation: spin 5000ms infinite linear;
-      }
+
       .music-card > .info {
         position: absolute;
-        bottom: 25px;
-        left: 0;
+        top: 10px;
+        left: 105px;
         right: 0;
-        text-align: center;
+        text-align: left;
       }
       .music-card > .info > .title {
-        font-size: 1.3em;
+        font-size: 16px;
         font-weight: 400;
         font-family: "Playfair display";
         color: #333;
@@ -382,37 +369,83 @@ input, .select select, .textarea {
       .music-card > .info > .artist {
         font-family: "Source sans pro";
         color: #cfcfcf;
-        font-size: 0.8em;
+        font-size: 12px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
-    
+
+      #extraInfo {
+          display: inline-flex;
+          justify-content: space-around;
+      }
+
       .songinfo {
-          font-size: 1em;
-          font-family: Playfair display;
-          color: rgb(70, 70, 70);
+          font-size: 14px;
       }
     
+
+
       #BPM {
-        margin-top: 7px;  
+        margin-top: 0px;  
       }
     
       #key {
-          margin-bottom: 4px;
+          margin-bottom: 0px;
       }
-    
 
+  }
 
   
-}
-
 
 
 
 /* 576 */
-  /* @media screen and (max-width: 576px) {
 
 
 
-  } */
+
+  @media screen and (max-width: 576px) {
+
+    .resultingCards {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .music-card {
+        margin: 10px 10px;
+        border-radius: 6px;
+        background: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        position: relative;
+        margin-right: auto;
+        margin-left: auto;
+        width: 200px;
+        height: 200px;
+        z-index: 2;
+    }
+
+    .music-card > .image img {
+        position: absolute;
+        z-index: 1;
+        opacity: 0.1;
+        height: 200px;
+        width: 200px;
+        
+      }
+
+    #extraInfo {
+        display: block;
+        justify-content: space-around;
+    }
+
+    .music-card > .info {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0 ;
+        text-align: center;
+      }
+  }
 
