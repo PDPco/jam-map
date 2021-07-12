@@ -1,7 +1,7 @@
 
 body {
     background-color: linear-gradient();
-    background-image: linear-gradient(#ECE8EF,#E3EBFF);
+    background-image: linear-gradient(#FAC9B8,#DB8A74);
     flex-direction: column;
   }
 
@@ -9,18 +9,18 @@ body {
     flex-grow: 1;
     flex-shrink: 0;
     padding: 3rem 1.5rem;
-    background-color: #F2DC5D;
+    background-color: rgb(73, 61, 58);
     }
 
 .title {
-    color: #F2A359;
+    color: #FAC9B8;
     font-size: 2rem;
     font-weight: 600;
     line-height: 1.125;
     }
 
 .subtitle {
-    color: #F2A359;
+    color: #FAC9B8;
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.25;
@@ -41,13 +41,15 @@ main{
 
 .label{
     margin-top: 10px;
-    font-family: monospace;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: larger;
+    color: rgb(73, 61, 58);
 }
 
 #minYearLabel, #maxYearLabel, #minBPMLabel, #maxBPMLabel {
     font-weight: lighter;
     font-size: smaller;
+    color: rgb(73, 61, 58);
 }
 
 
@@ -62,7 +64,7 @@ main{
     -webkit-appearance: none;
     width: 100%;
     height: 10px;
-    background: #F2A359;
+    background: rgb(73, 61, 58);
     /* border:solid #D6CE93; */
     outline:none;
     -webkit-transition: .2s;
@@ -76,7 +78,7 @@ input[type=range]::-webkit-slider-thumb {
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    background: #809BCE;
+    background: #C4E7D4;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
     }
 
@@ -98,6 +100,7 @@ input[type=range]::-webkit-slider-thumb {
 
 .output {
     margin-top: 5px;
+    color: #5C4742
 }
 
 .dropdown {
@@ -105,16 +108,16 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 .select:not(.is-multiple):not(.is-loading)::after {
-    border-color: #D8A48F;
+    border-color: #63585E;
     right: 1.125em;
     z-index: 4;
 }
 
 input, .select select, .textarea {
-    background-color:#efebce;
-    border-color: #efebce;
+    background-color:#C4E7D4;
+    border-color: #C4E7D4;
     border-width: 4px;
-    color: #495867;
+    color: #5C4742;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
     }
 
@@ -122,7 +125,7 @@ input, .select select, .textarea {
     width: 100%;
     margin-top: 30px;
     margin-bottom: 30px;
-    background-color:#495867 ;
+    background-color:rgb(73, 61, 58) ;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
@@ -196,7 +199,7 @@ input, .select select, .textarea {
     margin-left: -70%;
     margin-top: -130%;
     border-radius: 40%;
-    background: radial-gradient(#495867, #C18C5D);
+    background: radial-gradient(rgb(131, 113, 108), #DB8A74);
     -webkit-animation: spin 3000ms infinite linear;
             animation: spin 3000ms infinite linear;
   }
@@ -221,7 +224,7 @@ input, .select select, .textarea {
     font-size: 1.3em;
     font-weight: 400;
     font-family: "Playfair display";
-    color: #333;
+    color: rgb(73, 61, 58);
     margin-bottom: 2px;
   }
   .music-card > .info > .artist {
@@ -235,7 +238,7 @@ input, .select select, .textarea {
   .songinfo {
       font-size: 1em;
       font-family: Playfair display;
-      color: rgb(70, 70, 70);
+      color: rgb(73, 61, 58);
   }
 
   #BPM {
@@ -285,14 +288,6 @@ input, .select select, .textarea {
         display: block;
     }
 
-
-    .hero-body {
-        flex-grow: 1;
-        flex-shrink: 0;
-        padding: 3rem 1.5rem;
-        background-color: #424B54;
-        align-content: center;
-        }
     
     .title {
         margin-left: auto;
