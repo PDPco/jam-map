@@ -1,3 +1,4 @@
+// BPM SELECTION
 const maxBPMLabel = document.getElementById('maxBPMLabel')
 const maxBPMRange = document.getElementById('maxBPMRange')
 const MaxBPMValue = document.getElementById('MaxBPMValue')
@@ -263,7 +264,6 @@ function GetBpmApi(integer, userInput) {
 function iterateBpm(allInput) {
 	var minBpm = Number(allInput.minBpm);
 	var maxBpm = Number(allInput.maxBpm);
-
 	var Bpm = minBpm;
 	while (Bpm <= maxBpm) {//maxBpm) {
 		console.log(Bpm)
@@ -300,9 +300,10 @@ function clearResults() {
 function createLastResult() {
 	var lastResult = document.createElement('button');
 	var searchPref = document.getElementsByClassName('searchPreferences');
+	var previousSearch = JSON.parse(localStorage.getItem('previousSearch'));
 
 	lastResult.setAttribute('type', 'button');
-	var previousSearch = JSON.parse(localStorage.getItem('previousSearch'));
+	
 
 
 	if (previousSearch) {
@@ -367,10 +368,8 @@ function getUserInput() {
 		allInput.key = keyDropdown.value;
 
 		iterateBpm(allInput);
-		//console.log(allInput);
 		// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
 		prevSearch.push(allInput) // push allInput object to empty global array and saves array to localstorage
-		//console.log(prevSearch)
 		localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
 		createSearchHistory()
 
