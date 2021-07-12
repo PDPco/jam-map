@@ -62,7 +62,7 @@ main{
 
 .slider {
     -webkit-appearance: none;
-    width: 100%;
+    width: 10%;
     height: 10px;
     background: rgb(73, 61, 58);
     /* border:solid #D6CE93; */
