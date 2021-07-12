@@ -291,6 +291,24 @@ function getUserInput() {
  *		None
  */
  function updateSilderLabel(minSlider, maxSlider, minOut, maxOut) {
+	var tension = 150;
+	var friction = 8;
+	minSlider.addEventListener("mouseover", function() {
+		Velocity(minSlider, {width: "100%"}, {duration: 1000, 
+			easing: [tension, friction] 
+		})		
+		Velocity(maxSlider, {width: "100%"}, {duration: 1000, 
+			easing: [tension, friction] 
+		})	
+	})
+	maxSlider.addEventListener("mouseover", function(){
+		Velocity(minSlider, {width: "100%"}, {duration: 1000, 
+			easing: [tension, friction] 
+		})	
+		Velocity(maxSlider, {width: "100%"}, {duration: 1000, 
+			easing: [tension, friction] 
+		})		
+	})
 	minSlider.addEventListener("input", function(){
 		minOut.innerHTML = this.value;
 		minSlider.setAttribute("value", this.value);
@@ -299,6 +317,7 @@ function getUserInput() {
 		maxOut.innerHTML = this.value;
 		maxSlider.setAttribute("value", this.value);
 	})
+
 }
 
 /* initializeSliders creates pointers to the HTML slider elements and calls updateSliderLabel
@@ -311,6 +330,8 @@ function getUserInput() {
 function initializeSliders() {
 	updateSilderLabel(minBPMRange, maxBPMRange, MinBPMValue, MaxBPMValue);
 	updateSilderLabel(minYearRange, maxYearRange, currentMinYear, currentMaxYear);
+
+
 }
 
 function startJamMap() {
