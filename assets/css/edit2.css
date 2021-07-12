@@ -166,6 +166,10 @@ input, .select select, .textarea {
     width: 250px;
     height: 500px;
   }
+
+  .music-card.hide {
+    display: none;
+  }
   .music-card > .image img {
     position: absolute;
     z-index: 1;
