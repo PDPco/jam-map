@@ -158,7 +158,8 @@ input, .select select, .textarea {
     overflow: hidden;
     position: relative;
     width: 250px;
-    height: 500px;
+    height: 540px;
+
   }
   .music-card > .image img {
     position: absolute;
@@ -244,8 +245,8 @@ input, .select select, .textarea {
   }
 
   audio {
-      width: 75%;
-      height: 15px;
+      width: 90%;
+      height: 10px;
   }
 
 
@@ -452,11 +453,5 @@ input, .select select, .textarea {
         right: 0 ;
         text-align: center;
       }
-      audio {
-        width: 75%;
-        height: 15px;
-        z-index: 3;
-    }
-  
+  }
 
-    }
