@@ -40,7 +40,7 @@ if(localStorage.getItem('bpmSearch')){
 	bpmSearch = [];
 }
 
-//localStorage.clear()
+localStorage.clear()
 
 // -----------------------------------------------------------------------------------//
 
@@ -206,29 +206,39 @@ function createLastResult() {
 	var searchPref = document.getElementsByClassName('searchPreferences');
 
 	lastResult.setAttribute('type', 'button');
+	var previousSearch = JSON.parse(localStorage.getItem('previousSearch'));
 
-	searchPref[0].appendChild(lastResult);
 
-	var lastResults = JSON.parse(localStorage.getItem('lastResults'));
-	var currentResults = JSON.parse(localStorage.getItem('currentResults'));
+	if (previousSearch) {
+		var end = previousSearch.length - 1;
+		lastResult.innerHTML = "BPM: " + previousSearch[end].minBpm + " to " + previousSearch[end].maxBpm +
+				       ", Year: " + previousSearch[end].minYear + " to " + previousSearch[end].maxYear +
+				       ", Genre: " + previousSearch[end].genre +
+				       ", Origin: " + previousSearch[end].origin;
 
-	lastResults = currentResults;
-	localStorage.setItem('lastResults', JSON.stringify(lastResults));
-	localStorage.setItem('currentResults', null);	
+		searchPref[0].appendChild(lastResult);
+
+		var lastResults = JSON.parse(localStorage.getItem('lastResults'));
+		var currentResults = JSON.parse(localStorage.getItem('currentResults'));
+
+		lastResults = currentResults;
+		localStorage.setItem('lastResults', JSON.stringify(lastResults));
+		localStorage.setItem('currentResults', null);	
 	
-	lastResult.addEventListener('click', function() {
-		clearResults();
-		var tempResults = currentResults;
+		lastResult.addEventListener('click', function() {
+			clearResults();
+			var tempResults = currentResults;
 
 
-		localStorage.setItem('currentResults', null);
-		for (var i = 0; i < lastResults.length; i++) {
-			generateCard(lastResults[i]);
-		}
+			localStorage.setItem('currentResults', null);	
+			console.log(tempResults)
+			for (var i = 0; i < lastResults.length; i++) {
+				generateCard(lastResults[i]);
+			}
 
-		localStorage.setItem('lastResults', tempResults);
-		
-	})
+			localStorage.setItem('lastResults', JSON.stringify(tempResults));
+		})
+	}
 	
 }
 /* getUserInput waits for the user to submit their input values and those chosen values are stored in an
@@ -239,7 +249,6 @@ function createLastResult() {
  *		None
  */
 function getUserInput() {
-	console.log("im in")
 	var allInput = {minBpm: "",
 			maxBpm: "",
 			minYear: "",
@@ -261,10 +270,10 @@ function getUserInput() {
 		allInput.key = keyDropdown.value;
 
 		iterateBpm(allInput);
-		console.log(allInput);
+		//console.log(allInput);
 		// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
 		prevSearch.push(allInput) // push allInput object to empty global array and saves array to localstorage
-		console.log(prevSearch)
+		//console.log(prevSearch)
 		localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
 		createSearchHistory()
 
@@ -300,7 +309,6 @@ function getUserInput() {
  * 		None
  */
 function initializeSliders() {
-	console.log("im in")
 	updateSilderLabel(minBPMRange, maxBPMRange, MinBPMValue, MaxBPMValue);
 	updateSilderLabel(minYearRange, maxYearRange, currentMinYear, currentMaxYear);
 }
