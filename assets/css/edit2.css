@@ -1,7 +1,7 @@
 
 body {
     background-color: linear-gradient();
-    background-image: linear-gradient(#e8e9e5,#d3cec2);
+    background-image: linear-gradient(#FAC9B8,#DB8A74);
     flex-direction: column;
   }
 
@@ -9,18 +9,18 @@ body {
     flex-grow: 1;
     flex-shrink: 0;
     padding: 3rem 1.5rem;
-    background-color: #424B54;
+    background-color: rgb(73, 61, 58);
     }
 
 .title {
-    color: #e8e9e5;
+    color: #FAC9B8;
     font-size: 2rem;
     font-weight: 600;
     line-height: 1.125;
     }
 
 .subtitle {
-    color: #e8e9e5;
+    color: #FAC9B8;
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.25;
@@ -36,18 +36,20 @@ main{
     align-content: flex-start;
     margin-left: 40px;
     width: 270px;
-    border-right-color: green;
+    
 }
 
 .label{
     margin-top: 10px;
-    font-family: monospace;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: larger;
+    color: rgb(73, 61, 58);
 }
 
 #minYearLabel, #maxYearLabel, #minBPMLabel, #maxBPMLabel {
     font-weight: lighter;
     font-size: smaller;
+    color: rgb(73, 61, 58);
 }
 
 
@@ -62,11 +64,12 @@ main{
     -webkit-appearance: none;
     width: 10%;
     height: 10px;
-    background: #efebce;
+    background: rgb(73, 61, 58);
     /* border:solid #D6CE93; */
     outline:none;
     -webkit-transition: .2s;
     border-radius: 4px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
 input[type=range]::-webkit-slider-thumb {
@@ -75,7 +78,8 @@ input[type=range]::-webkit-slider-thumb {
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    background: #D8A48F;
+    background: #C4E7D4;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
     }
 
     ::marker {
@@ -96,6 +100,7 @@ input[type=range]::-webkit-slider-thumb {
 
 .output {
     margin-top: 5px;
+    color: #5C4742
 }
 
 .dropdown {
@@ -103,22 +108,25 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 .select:not(.is-multiple):not(.is-loading)::after {
-    border-color: limegreen;
+    border-color: #63585E;
     right: 1.125em;
     z-index: 4;
 }
 
 input, .select select, .textarea {
-    background-color:white;
-    border-color: black;
+    background-color:#C4E7D4;
+    border-color: #C4E7D4;
     border-width: 4px;
-    color: blue;
+    color: #5C4742;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
     }
 
 #submitBTN {
-    width: 30%;
+    width: 100%;
     margin-top: 30px;
     margin-bottom: 30px;
+    background-color:rgb(73, 61, 58) ;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
 .searchResults {
@@ -183,7 +191,7 @@ input, .select select, .textarea {
   } */
   .music-card > .wave {
     position: absolute;
-    height: 570px;
+    height: 550px;
     width: 600px;
     opacity: 0.6;
     left: 0;
@@ -191,7 +199,7 @@ input, .select select, .textarea {
     margin-left: -70%;
     margin-top: -130%;
     border-radius: 40%;
-    background: radial-gradient(#B01DE8, #F34235);
+    background: radial-gradient(rgb(131, 113, 108), #DB8A74);
     -webkit-animation: spin 3000ms infinite linear;
             animation: spin 3000ms infinite linear;
   }
@@ -216,7 +224,7 @@ input, .select select, .textarea {
     font-size: 1.3em;
     font-weight: 400;
     font-family: "Playfair display";
-    color: #333;
+    color: rgb(73, 61, 58);
     margin-bottom: 2px;
   }
   .music-card > .info > .artist {
@@ -230,7 +238,7 @@ input, .select select, .textarea {
   .songinfo {
       font-size: 1em;
       font-family: Playfair display;
-      color: rgb(70, 70, 70);
+      color: rgb(73, 61, 58);
   }
 
   #BPM {
@@ -249,10 +257,14 @@ input, .select select, .textarea {
   }
 
   audio {
+    -webkit-appearance: none;
       width: 75%;
       height: 15px;
   }
 
+  :host(audio), :host(video.media-document.audio), * {
+    --inline-controls-bar-height: 15px;
+    }
 
 
 
@@ -276,14 +288,6 @@ input, .select select, .textarea {
         display: block;
     }
 
-
-    .hero-body {
-        flex-grow: 1;
-        flex-shrink: 0;
-        padding: 3rem 1.5rem;
-        background-color: #424B54;
-        align-content: center;
-        }
     
     .title {
         margin-left: auto;
