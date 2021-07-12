@@ -34,8 +34,8 @@ main{
     display: flex;
     flex-direction: column;
     align-content: flex-start;
-    margin-left: 5%;
-    width: 30%;
+    margin-left: 40px;
+    width: 270px;
     border-right-color: green;
 }
 
@@ -55,6 +55,7 @@ main{
     display: flex;
     flex-direction: column;
     align-content: flex-start;
+    width: 100%;
 }
 
 .slider {
@@ -122,7 +123,7 @@ input, .select select, .textarea {
 
 .searchResults {
     margin-left: 5%;
-    /* margin-right: 5%; */
+    right: 0;
 }
 
 .resultingCards {
