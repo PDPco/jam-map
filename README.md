@@ -1,5 +1,10 @@
 # Jam Map
-Jam Map is designed around the idea that a user may want to find songs to add to their playlist based on some categorical options (genre and year) or music fundamentals (tempo and key). The goal is to present the user with results that have the same feel as familiar songs and fill out their playlist. The results come with cover art and samples to help the user quickly decide on a song they enjoy. 
+Jam Map is designed around the idea that a user may want to find songs to add to their playlist based on some categorical options (genre and year) or music fundamentals (tempo and key). The goal is to present the user with results that have the same feel as familiar songs and fill out their playlist. The results come with cover art and samples to help the user quickly decide on a song they enjoy.
+
+<p align="center">
+	<img src="https://media.giphy.com/media/lHnyOACjCMbHKtjNBP/giphy.gif">
+<p>
+
 # How it works
 To receive a list of potential songs, the user first specifies a range of beats per minute (or BPM), a range of years, and genre (key feature still in progress). The app will reference the [GetSongBPM API](https://getsongbpm.com/api) which allows for filtering by BPM, year, genre, and key. With these filtered results, the next step is to get cover art and samples to attach to the results which is achieved by calling [iTunes' API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/index.html). Results from GetSongBPM are limited to the most played songs within the last 30 days and are mostly older songs as opposed to more modern songs.
 

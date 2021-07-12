@@ -1,3 +1,4 @@
+// BPM SELECTION
 const maxBPMLabel = document.getElementById('maxBPMLabel')
 const maxBPMRange = document.getElementById('maxBPMRange')
 const MaxBPMValue = document.getElementById('MaxBPMValue')
@@ -44,6 +45,13 @@ localStorage.clear()
 
 // -----------------------------------------------------------------------------------//
 
+/* generateCard takes in a single result containing a single song and artist, then places that information in a
+ * card to be shown on the page.
+ * 	Inputs:
+ * 		bpmResult (Object): object containing information about a single song and artist
+ * 	Outputs:
+ * 		None
+ */
 function generateCard(bpmResult) {
 	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
 	var musicCard = document.getElementsByClassName('music-card');
@@ -169,6 +177,82 @@ function parseBpmResults(bpmResults) {
 	}
 }
 
+
+/* Initializes a for loop to filter data give to retrieve results that match the user criteria
+ * 	Input: 
+ * 		inputData (Object): data meant to be filtered through, which would be results from fetch of getsongbpm
+ * 		userInput (Object): matches from the user input of what desired results should meet. which would be allInput defined above line 175.
+ *
+ * 	Output: 
+ * 	    arrayOfObjects (array): object that meets all parameters set within if statement. pushed to the array where sorted and then returned within an array, arrayOfObjects
+ */
+
+function createArrObj(inputData, userInput){
+    var arrayOfObjects = [];
+	console.log(inputData.tempo.length)
+    for(i=0; i < inputData.tempo.length; i++) {
+		var parsedInt = parseInt(inputData.tempo[i].album.year)
+		var userParsedMinInt = parseInt(userInput.minYear)
+		var userParsedMaxInt = parseInt(userInput.maxYear)
+		// console.log(inputData.tempo[i].artist.genres.includes(userInput.genre))
+		// console.log(inputData.tempo[i].artist.from.includes(userInput.origin))
+		if(inputData.tempo[i].artist.genres === null || inputData.tempo[i].artist.from === null){
+			continue;
+		}
+		if(userParsedMinInt > userParsedMaxInt) {
+			console.log('Your minimum year must be smaller than your maxmimum')
+			return;
+		}
+		// ADDED CONSOLE LOG FOR WHEN SLIDER OF MIN IS BIGGER THAN MAX.
+		if(inputData.tempo[i].artist.genres.includes(userInput.genre) && inputData.tempo[i].artist.from.includes(userInput.origin) && parsedInt >= userParsedMinInt && parsedInt <= userParsedMaxInt) { // need to write functionality for taking the specified year
+			songInfo = {
+				name: inputData.tempo[i].artist.name,
+				mbid: inputData.tempo[i].artist.mbid,
+				songName: inputData.tempo[i].song_title,
+				year: inputData.tempo[i].album.year,
+				genre: inputData.tempo[i].artist.genres,
+				origin: inputData.tempo[i].artist.from,
+				BPM: inputData.tempo[i].tempo
+			}
+			arrayOfObjects.push(songInfo)
+			//console.log(arrayOfObjects)
+			bpmSearch.push(songInfo)
+		}
+	}
+	localStorage.setItem('bpmSearch',JSON.stringify(bpmSearch))
+    return arrayOfObjects;
+}
+
+
+/* To initialize the fetch from getsongbpm api and print response and data to console for access.
+ * 	Input: 
+ *		integer (Number): parameter which is defined by the user input
+ *            userInput (Object): which is defined by user through selectors
+ *
+ *	Output:
+ *		createArrObj saved to filtered arr and printed to console with retrieved results or no results found
+ *
+ */ 
+
+function GetBpmApi(integer, userInput) {
+    fetch(`https://api.getsongbpm.com/tempo/?api_key=893450d85c97cdffba8a49349f3d8974&bpm=${integer}`)
+    .then(function (response) {
+        console.log(response)
+        return response.json();
+    })
+    .then(function (data) {
+        console.log(data)
+        var objArr = createArrObj(data, userInput)
+		 if (objArr.length === 0) {
+		 	console.log('No results found')
+		 } else {
+		 	// console.log(objArr)
+			parseBpmResults(objArr)
+		 }
+    })
+}
+
+
 /* iterateBpm takes the object, `allInput`, containing the user chose BPM range and iterates from
  * the minimum BPM to the maximum BPM.
  *	Input:
@@ -180,15 +264,21 @@ function parseBpmResults(bpmResults) {
 function iterateBpm(allInput) {
 	var minBpm = Number(allInput.minBpm);
 	var maxBpm = Number(allInput.maxBpm);
-
 	var Bpm = minBpm;
-	while (Bpm <= minBpm) {//maxBpm) {
+	while (Bpm <= maxBpm) {//maxBpm) {
 		console.log(Bpm)
 		GetBpmApi(Bpm, allInput); //may need to pass allInput to GetBpmApi to filter results
-		Bpm++;
+		Bpm += Number(((maxBpm-minBpm)/4).toFixed(0));
+		console.log(Bpm)
 	}
 }
 
+/* clearResults removes the displayed cards from the page by iteratively removing children from the cards container
+ *	Inputs:
+ *		None
+ *	Outputs:
+ *		None
+ */
 function clearResults() {
 	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
 	var resultingCardsLength = resultingCardsContainer[0].children.length;
@@ -201,12 +291,19 @@ function clearResults() {
 	}
 }
 
+/* createLastResult creates a button for the last result with an event listener to display that previous result
+ *	Inputs:
+ *		None
+ *	Outputs:
+ *		None
+ */
 function createLastResult() {
 	var lastResult = document.createElement('button');
 	var searchPref = document.getElementsByClassName('searchPreferences');
+	var previousSearch = JSON.parse(localStorage.getItem('previousSearch'));
 
 	lastResult.setAttribute('type', 'button');
-	var previousSearch = JSON.parse(localStorage.getItem('previousSearch'));
+	
 
 
 	if (previousSearch) {
@@ -241,6 +338,7 @@ function createLastResult() {
 	}
 	
 }
+
 /* getUserInput waits for the user to submit their input values and those chosen values are stored in an
  * object used by iterateBpm and GetBpmApi.
  *	Inputs:
@@ -270,10 +368,8 @@ function getUserInput() {
 		allInput.key = keyDropdown.value;
 
 		iterateBpm(allInput);
-		//console.log(allInput);
 		// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
 		prevSearch.push(allInput) // push allInput object to empty global array and saves array to localstorage
-		//console.log(prevSearch)
 		localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
 		createSearchHistory()
 
@@ -346,81 +442,6 @@ startJamMap();
 // ------------------------ START OF NEW WORK SPACE ----------
 
 console.log(genreDropdown.value)
-
-/*
-To initialize the fetch from getsongbpm api and print response and data to console for access.
-input: 
--integer parameter which is defined by the user input
-- userInput which is defined by user through selectors
-
-output:
-createArrObj saved to filtered arr and printed to console with retrieved results or no results found
-
-*/ 
-
-function GetBpmApi(integer, userInput) {
-    fetch(`https://api.getsongbpm.com/tempo/?api_key=893450d85c97cdffba8a49349f3d8974&bpm=${integer}`)
-    .then(function (response) {
-        console.log(response)
-        return response.json();
-    })
-    .then(function (data) {
-        console.log(data)
-        var objArr = createArrObj(data, userInput)
-		 if (objArr.length === 0) {
-		 	console.log('No results found')
-		 } else {
-		 	// console.log(objArr)
-			parseBpmResults(objArr)
-		 }
-    })
-}
-
-/*
-Initializes a for loop to filter data give to retrieve results that match the user criteria
-
-input: 
--inputData = data meant to be filtered through, which would be results from fetch of getsongbpm
--userInput = matches from the user input of what desired results should meet. which would be allInput defined above line 175.
-
-output: object that meets all parameters set within if statement. pushed to the array where sorted and then returned within an array, arrayOfObjects
-*/
-
-function createArrObj(inputData, userInput){
-    var arrayOfObjects = [];
-	console.log(inputData.tempo.length)
-    for(i=0; i < inputData.tempo.length; i++) {
-		var parsedInt = parseInt(inputData.tempo[i].album.year)
-		var userParsedMinInt = parseInt(userInput.minYear)
-		var userParsedMaxInt = parseInt(userInput.maxYear)
-		// console.log(inputData.tempo[i].artist.genres.includes(userInput.genre))
-		// console.log(inputData.tempo[i].artist.from.includes(userInput.origin))
-		if(inputData.tempo[i].artist.genres === null || inputData.tempo[i].artist.from === null){
-			continue;
-		}
-		if(userParsedMinInt > userParsedMaxInt) {
-			console.log('Your minimum year must be smaller than your maxmimum')
-			return;
-		}
-		// ADDED CONSOLE LOG FOR WHEN SLIDER OF MIN IS BIGGER THAN MAX.
-		if(inputData.tempo[i].artist.genres.includes(userInput.genre) && inputData.tempo[i].artist.from.includes(userInput.origin) && parsedInt >= userParsedMinInt && parsedInt <= userParsedMaxInt) { // need to write functionality for taking the specified year
-			songInfo = {
-				name: inputData.tempo[i].artist.name,
-				mbid: inputData.tempo[i].artist.mbid,
-				songName: inputData.tempo[i].song_title,
-				year: inputData.tempo[i].album.year,
-				genre: inputData.tempo[i].artist.genres,
-				origin: inputData.tempo[i].artist.from,
-				BPM: inputData.tempo[i].tempo
-			}
-			arrayOfObjects.push(songInfo)
-			//console.log(arrayOfObjects)
-			bpmSearch.push(songInfo)
-		}
-	}
-	localStorage.setItem('bpmSearch',JSON.stringify(bpmSearch))
-    return arrayOfObjects;
-}
 
 // CREATE THE ELEMENTS FOR A SEARCH HISTORY **WIP**
 // NEXT STEP IS TO ADD SELECTORS AND CREATE ELEMENTS
