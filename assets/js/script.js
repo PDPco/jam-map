@@ -44,8 +44,7 @@ localStorage.clear()
 
 // -----------------------------------------------------------------------------------//
 
-function generateCard(bpmResult, match) {
-	console.log(match)
+function generateCard(bpmResult) {
 	var resultingCardsContainer = document.getElementsByClassName('resultingCards');
 	var musicCard = document.getElementsByClassName('music-card');
 	var clone = musicCard[0].cloneNode(true);
@@ -67,16 +66,33 @@ function generateCard(bpmResult, match) {
 	console.log(musicCard)
 
 	var imgEl = clone.getElementsByTagName('img')[0];	
-	var artworkURL = match.artworkUrl100;
+	var artworkURL = bpmResult.match.artworkUrl100;
 	imgEl.setAttribute('src', artworkURL);
 
-	var m4aURL = match.previewUrl;
+	var m4aURL = bpmResult.match.previewUrl;
 	var audioEl = clone.getElementsByTagName('audio');
 
 	console.log(audioEl[0])
 	audioEl[0].setAttribute('src', m4aURL);
 	audioEl[0].setAttribute('controls', '');
 	audioEl[0].setAttribute('type', 'audio/mp4');
+
+	var saveBpmResult = {mbid: bpmResult.mbid,
+			     name: bpmResult.name,
+			     songName: bpmResult.songName,
+			     BPM: bpmResult.BPM,
+			     genre: bpmResult.genre,
+			     year: bpmResult.year,
+			     match: bpmResult.match,
+			     }
+	var storage = JSON.parse(localStorage.getItem('currentResults'));
+	
+	if (storage) {
+		storage.push(saveBpmResult);
+		localStorage.setItem('currentResults', JSON.stringify(storage));
+	} else {
+		localStorage.setItem('currentResults', JSON.stringify([saveBpmResult]));
+	}
 }
 
 /* makeItunesCall creates the call to the iTunes. The call is different than using fetch since we 
@@ -90,14 +106,14 @@ function generateCard(bpmResult, match) {
  *	Outputs:
  *		None
  */
-async function makeItunesCall(searchTerm, artistName, bpmResult) {
-	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm + "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
+function makeItunesCall(searchTerm, artistName, bpmResult) {
+	var fullUrl = "https://itunes.apple.com/search?term=" + searchTerm 
+			+ "&media=music&entity=song&attribute=songTerm&limit=200&callback=getItunesData";
 	$.ajax({
 		url: fullUrl,
 		dataType: 'jsonp',
 
 	}).done(function(response) {
-		//console.log(response)
 		var match;
 		var displayBool = false;
 		for (var i = 0; i < response.results.length; i++) {
@@ -108,11 +124,12 @@ async function makeItunesCall(searchTerm, artistName, bpmResult) {
 				break;
 			} 
 		}
+
+		bpmResult.match = match;
 		if (displayBool) {
-			generateCard(bpmResult, match)
+			generateCard(bpmResult)
 		}
 	})
-	return;
 }
 
 /* plusDelimitString takes in `str` which is assumed to be the artist and song name delimited by spaces and replaces
@@ -184,6 +201,46 @@ function clearResults() {
 	}
 }
 
+function createLastResult() {
+	var lastResult = document.createElement('button');
+	var searchPref = document.getElementsByClassName('searchPreferences');
+
+	lastResult.setAttribute('type', 'button');
+	var previousSearch = JSON.parse(localStorage.getItem('previousSearch'));
+
+
+	if (previousSearch) {
+		var end = previousSearch.length - 1;
+		lastResult.innerHTML = "BPM: " + previousSearch[end].minBpm + " to " + previousSearch[end].maxBpm +
+				       ", Year: " + previousSearch[end].minYear + " to " + previousSearch[end].maxYear +
+				       ", Genre: " + previousSearch[end].genre +
+				       ", Origin: " + previousSearch[end].origin;
+
+		searchPref[0].appendChild(lastResult);
+
+		var lastResults = JSON.parse(localStorage.getItem('lastResults'));
+		var currentResults = JSON.parse(localStorage.getItem('currentResults'));
+
+		lastResults = currentResults;
+		localStorage.setItem('lastResults', JSON.stringify(lastResults));
+		localStorage.setItem('currentResults', null);	
+	
+		lastResult.addEventListener('click', function() {
+			clearResults();
+			var tempResults = currentResults;
+
+
+			localStorage.setItem('currentResults', null);	
+			console.log(tempResults)
+			for (var i = 0; i < lastResults.length; i++) {
+				generateCard(lastResults[i]);
+			}
+
+			localStorage.setItem('lastResults', JSON.stringify(tempResults));
+		})
+	}
+	
+}
 /* getUserInput waits for the user to submit their input values and those chosen values are stored in an
  * object used by iterateBpm and GetBpmApi.
  *	Inputs:
@@ -192,7 +249,6 @@ function clearResults() {
  *		None
  */
 function getUserInput() {
-	console.log("im in")
 	var allInput = {minBpm: "",
 			maxBpm: "",
 			minYear: "",
@@ -203,6 +259,7 @@ function getUserInput() {
 	}
 	submitBTN.addEventListener("click", function(event){
 		event.preventDefault();
+		createLastResult();
 		clearResults();
 		allInput.minBpm = minBPMRange.value;//getAttribute("value");
 		allInput.maxBpm = maxBPMRange.value;//getAttribute("value");
@@ -213,10 +270,10 @@ function getUserInput() {
 		allInput.key = keyDropdown.value;
 
 		iterateBpm(allInput);
-		console.log(allInput);
+		//console.log(allInput);
 		// ADDING THE ALLINPUT VALUES TO LOCAL STORAGE TO STORE ON PAGE AND RETRIEVE FOR SEARCH HISTORY TAB
 		prevSearch.push(allInput) // push allInput object to empty global array and saves array to localstorage
-		console.log(prevSearch)
+		//console.log(prevSearch)
 		localStorage.setItem("previousSearch", JSON.stringify(prevSearch))
 		createSearchHistory()
 
@@ -252,7 +309,6 @@ function getUserInput() {
  * 		None
  */
 function initializeSliders() {
-	console.log("im in")
 	updateSilderLabel(minBPMRange, maxBPMRange, MinBPMValue, MaxBPMValue);
 	updateSilderLabel(minYearRange, maxYearRange, currentMinYear, currentMaxYear);
 }
